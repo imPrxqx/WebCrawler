@@ -1,2 +1,2 @@
 # WebCrawler
-Credit Program - Matyáš Černíček, Šimon Jůza, Jan Růžička a Anastasia Rashpyl
+Credit Program - Matyáš Černíček, Šimon Jůza a Jan Růžička
