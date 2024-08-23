@@ -3,20 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\models\\node.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:models\\node.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\user\\downloads\\webcrawler\\webcrawler\\controllers\\getnodesdatafunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\getnodesdatafunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\user\\downloads\\webcrawler\\webcrawler\\controllers\\frontnodemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\frontnodemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\user\\downloads\\webcrawler\\webcrawler\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\user\\downloads\\webcrawler\\webcrawler\\models\\node.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:models\\node.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\user\\downloads\\webcrawler\\webcrawler\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\controllers\\frontnodemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\frontnodemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,24 +30,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAqwBYAAAAaAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-23T13:43:23.154Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "GetNodesDataFunction.cs",
               "DocumentMoniker": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\GetNodesDataFunction.cs",
               "RelativeDocumentMoniker": "Controllers\\GetNodesDataFunction.cs",
               "ToolTip": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\GetNodesDataFunction.cs",
               "RelativeToolTip": "Controllers\\GetNodesDataFunction.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAOAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADgAAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-23T11:47:06.086Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "FrontNodeManager.cs",
               "DocumentMoniker": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\FrontNodeManager.cs",
               "RelativeDocumentMoniker": "Controllers\\FrontNodeManager.cs",
@@ -56,13 +73,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Node.cs",
               "DocumentMoniker": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\Models\\Node.cs",
               "RelativeDocumentMoniker": "Models\\Node.cs",
               "ToolTip": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\Models\\Node.cs",
               "RelativeToolTip": "Models\\Node.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAKAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-23T11:44:53.751Z",
               "EditorCaption": ""
@@ -75,7 +92,7 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACAAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-22T12:31:56.917Z",
               "EditorCaption": ""
