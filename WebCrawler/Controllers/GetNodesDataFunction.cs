@@ -3,9 +3,9 @@ using WebCrawler.Models;
 
 public class GetNodesDataFunction
 {
-    public Node GetNextNode(Uri url)
+    public Node? GetNextNode(Uri url)
     {
-        List<Uri> links = new List<Uri>();
+        List<Uri> links;
 
         try
         {
@@ -21,9 +21,9 @@ public class GetNodesDataFunction
                 CorrectUrls(links);
             }
         }
-        catch (HttpRequestException e)
+        catch
         {
-            Console.WriteLine($"Error fetching data: {e.Message}");
+            return null;
         }
 
         return new Node(url, links);
