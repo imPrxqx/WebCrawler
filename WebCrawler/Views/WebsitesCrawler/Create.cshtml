@@ -1,0 +1,46 @@
+﻿@model WebsiteRecordModel
+
+<h2>Create/Edit Website</h2>
+
+<form asp-action="WebsiteRecord" asp-controller="WebsitesCrawler">
+    <div class="form-group">
+        <label asp-for="Url"></label>
+        <input asp-for="Url" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="BoundaryRegExp"></label>
+        <input asp-for="BoundaryRegExp" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Periodicity</label>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Days">Days</label>
+                <input asp-for="Days" class="form-control" type="number" min="0" />
+            </div>
+            <div class="col">
+                <label asp-for="Hours">Hours</label>
+                <input asp-for="Hours" class="form-control" type="number" min="0" max="23" />
+            </div>
+            <div class="col">
+                <label asp-for="Minutes">Minutes</label>
+                <input asp-for="Minutes" class="form-control" type="number" min="0" max="59" />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Label"></label>
+        <input asp-for="Label" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IsActive"></label>
+        <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Tags"></label>
+        <input asp-for="Tags" class="form-control" placeholder="Separate by commas" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
