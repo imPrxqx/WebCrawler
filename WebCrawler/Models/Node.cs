@@ -1,11 +1,13 @@
-﻿namespace WebCrawler.Models
+﻿using System;
+
+namespace WebCrawler.Models
 {
     public struct Node
     {
-        public string url { get; set; }
-        public List<string> nextUrls { get; set; }
+        public Uri url { get; set; }
+        public List<Uri> nextUrls { get; set; }
 
-        public Node(string url, List<string> nextUrls)
+        public Node(Uri url, List<Uri> nextUrls)
         {
             this.url = url;
             this.nextUrls = nextUrls;

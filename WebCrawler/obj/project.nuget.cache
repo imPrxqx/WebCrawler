@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "a1ldVGsFD87PwdR5/W/buo3XFtBXhQtdfx3nduk1GUxRhVvVR9bG3ufayAnwjbkL+6TycCjPiQ9P3eD6xaNAzw==",
+  "dgSpecHash": "pmlpa3FwSD0OBaB+fikzQv0fsTSnoWJ1PWEUg9RuTheLBJdOQVnYCTr4IzpkhNf2wZ7REZxwFWCeusmhbXexyA==",
   "success": true,
   "projectFilePath": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\WebCrawler.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\user\\.nuget\\packages\\htmlagilitypack\\1.11.64\\htmlagilitypack.1.11.64.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.6\\microsoft.visualstudio.azure.containers.tools.targets.1.19.6.nupkg.sha512"
   ],
   "logs": []

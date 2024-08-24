@@ -29,3 +29,6 @@ C:\Users\user\Downloads\WebCrawler\WebCrawler\obj\Debug\net8.0\refint\WebCrawler
 C:\Users\user\Downloads\WebCrawler\WebCrawler\obj\Debug\net8.0\WebCrawler.pdb
 C:\Users\user\Downloads\WebCrawler\WebCrawler\obj\Debug\net8.0\WebCrawler.genruntimeconfig.cache
 C:\Users\user\Downloads\WebCrawler\WebCrawler\obj\Debug\net8.0\ref\WebCrawler.dll
+C:\Users\user\Downloads\WebCrawler\WebCrawler\bin\Debug\net8.0\HtmlAgilityPack.dll
+C:\Users\user\Downloads\WebCrawler\WebCrawler\obj\Debug\net8.0\WebCrawler.csproj.AssemblyReference.cache
+C:\Users\user\Downloads\WebCrawler\WebCrawler\obj\Debug\net8.0\WebCrawler.csproj.Up2Date
