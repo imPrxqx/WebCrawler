@@ -7,17 +7,16 @@ namespace WebCrawler.Controllers
 {
     public class FrontNodeManager
     {
-        public List<Node?> ManageUrls(Uri rootUrl, string boundary)
+        public IEnumerable<Node?> ManageUrls(Uri rootUrl, string boundary)
         {
             GetNodesDataFunction nodeDataFunction = new GetNodesDataFunction();
             Queue<Uri> urlQueue = new Queue<Uri>();
-            HashSet<Uri> SeenUrls = new HashSet<Uri>();
-            List<Node?> nodeList = new List<Node?>();
+            HashSet<Uri> seenUrls = new HashSet<Uri>();
 
-            if (validUrl(rootUrl, boundary))
+            if (ValidUrl(rootUrl, boundary))
             {
                 urlQueue.Enqueue(rootUrl);
-                SeenUrls.Add(rootUrl);
+                seenUrls.Add(rootUrl);
             }
 
             while (urlQueue.Count > 0)
@@ -25,32 +24,25 @@ namespace WebCrawler.Controllers
                 Uri currentUrl = urlQueue.Dequeue();
 
                 Node? currentNode = nodeDataFunction.GetNextNode(currentUrl);
-                if(currentNode == null)
+                if (currentNode != null)
                 {
-                    continue;
-                }
-                nodeList.Add(currentNode);
+                    yield return currentNode; 
 
-                foreach (Uri nextUrl in currentNode?.nextUrls)
-                {
-                    if (!SeenUrls.Contains(nextUrl) && validUrl(nextUrl, boundary))
+                    foreach (Uri nextUrl in currentNode?.nextUrls)
                     {
-                        urlQueue.Enqueue(nextUrl);
-                        SeenUrls.Add(nextUrl);
+                        if (!seenUrls.Contains(nextUrl) && ValidUrl(nextUrl, boundary))
+                        {
+                            urlQueue.Enqueue(nextUrl);
+                            seenUrls.Add(nextUrl);
+                        }
                     }
                 }
             }
-            Console.WriteLine("finished");
-            return (nodeList);
         }
 
-        private bool validUrl(Uri url, string boundary)
+        private bool ValidUrl(Uri url, string boundary)
         {
-            if (Regex.IsMatch(url.AbsoluteUri, boundary))
-            {
-                return true;
-            }
-            return false;
+            return Regex.IsMatch(url.AbsoluteUri, boundary);
         }
     }
 }
