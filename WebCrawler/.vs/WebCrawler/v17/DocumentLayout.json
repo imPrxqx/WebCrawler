@@ -3,7 +3,7 @@
   "WorkspaceRootPath": "C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\controllers\\websitescrawlercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\user\\downloads\\webcrawler\\webcrawler\\controllers\\websitescrawlercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\websitescrawlercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -15,7 +15,7 @@
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:models\\node.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\user\\downloads\\webcrawler\\webcrawler\\views\\websitescrawler\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|C:\\Users\\user\\Downloads\\WebCrawler\\WebCrawler\\views\\websitescrawler\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:views\\websitescrawler\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
@@ -66,8 +66,7 @@
               "RelativeToolTip": "Models\\WebsiteRecordModel.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAACAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-24T12:51:59.818Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-24T12:51:59.818Z"
             },
             {
               "$type": "Document",
@@ -128,8 +127,7 @@
               "RelativeToolTip": "Views\\WebsitesCrawler\\Create.cshtml",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAABCAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-24T12:54:57.791Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-24T12:54:57.791Z"
             },
             {
               "$type": "Document",
@@ -141,8 +139,7 @@
               "RelativeToolTip": "Models\\Node.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-23T11:44:53.751Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-23T11:44:53.751Z"
             },
             {
               "$type": "Document",
