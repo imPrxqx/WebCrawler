@@ -1,0 +1,138 @@
+﻿@model List<WebCrawler.Models.WebsiteRecordModel>
+@{
+    ViewData["Title"] = "Article List";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Article List</title>
+	</head>
+	<body>
+		<div id="container">
+
+		<div class="topnav">
+			<input type="text" id="searchBarInput" onkeyup="searchFunction()" placeholder="Search for labels..">
+		</div>
+
+			<div>
+				<hr>
+			</div>
+			
+			<div>		
+				<ul id="crawler-list">					
+					@foreach (var article in Model)
+					{
+						<li class="article" id="@article.Id">
+							<div>
+								<p>@article.Id</p>
+							</div>
+							<div>
+								<a href="~/article/@article.Id">Show</a>
+								<a href="~/article-edit/@article.Id">Edit</a>
+								<a class="delete">Delete</a>
+							</div>
+						</li>
+					}
+				</ul>				
+			</div>
+			
+			<div>
+				<hr>
+			</div>
+			<div id="pagination">
+				<div id="page-left">
+					<div>
+					<button id="prev-page" onclick="prevPage()">Previous</button>
+					</div>
+					<div>
+					<button id="next-page" onclick="nextPage()">Next</button>
+					</div>
+				</div>
+				<div id="page-right">
+					<span id="count-page"></span>
+				</div>
+			</div>
+				
+		</div>
+
+		<script>
+
+		let start = 0;
+		let end = 9;
+		const inc = end + 1;
+
+		filterAndShot();
+		getPageNum();
+
+		function nextPage() {
+			start += inc;
+			end += inc;
+			filterAndShot();
+			getPageNum();
+		}
+
+		function prevPage() {
+			start -= inc;
+			end -= inc;
+			filterAndShot();
+			getPageNum();
+		}
+
+		function filterAndShot() {
+			let input = document.getElementById('searchBarInput').value.toUpperCase();
+			let articles = document.querySelectorAll(".article");
+			let numOfArticles = articles.length;
+			let filteredArticles = [];
+			let currentPage = Math.floor(start / (end - start + 1)) + 1;
+
+			for (let i = 0; i < numOfArticles; i++) {
+				let articleText = articles[i].getElementsByTagName("p")[0].textContent || articles[i].getElementsByTagName("p")[0].innerText;
+				if (articleText.toUpperCase().indexOf(input) > -1) {
+					articles[i].style.display = "block";
+					filteredArticles.push(articles[i]);
+				} else {
+					articles[i].style.display = "none";
+				}
+			}
+
+			let filteredNumOfArticles = filteredArticles.length;
+
+			for (let i = 0; i < filteredNumOfArticles; i++) {
+				if (i >= start && i <= end) {
+					filteredArticles[i].style.display = "block";
+				} else {
+					filteredArticles[i].style.display = "none";
+				}
+			}
+
+			if (start > 0) {
+				document.getElementById("prev-page").style.visibility = "visible";
+			} else {
+				document.getElementById("prev-page").style.visibility = "hidden";
+			}
+
+			if (end < (filteredNumOfArticles - 1)) {
+				document.getElementById("next-page").style.visibility = "visible";
+			} else {
+				document.getElementById("next-page").style.visibility = "hidden";
+			}
+		}
+
+		function getPageNum() {
+			document.getElementById("count-page").innerText = ("page count: ") + ((start + inc) / inc);
+		}
+
+		function searchFunction() {
+			start = 0;
+			end = 9;
+			filterAndShot();
+			getPageNum();
+		}
+
+
+		</script>
+	</body>
+</html>

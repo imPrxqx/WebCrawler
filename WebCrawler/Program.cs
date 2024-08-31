@@ -1,3 +1,6 @@
+using WebCrawler.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace WebCrawler
 {
     public class Program
@@ -8,8 +11,9 @@ namespace WebCrawler
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+			builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            var app = builder.Build();
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

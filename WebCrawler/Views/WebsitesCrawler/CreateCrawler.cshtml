@@ -1,8 +1,15 @@
-﻿@model WebsiteRecordModel
+﻿@*
+    Ma na starost vytvoreni ccerva
+*@
+@{
+}
+
+
+@model WebsiteRecordModel
 
 <h2>Create/Edit Website</h2>
 
-<form asp-action="WebsiteRecord" asp-controller="WebsitesCrawler">
+<form asp-action="CreateWebsiteRecord" asp-controller="WebsitesCrawler">
     <div class="form-group">
         <label asp-for="Url"></label>
         <input asp-for="Url" class="form-control" />

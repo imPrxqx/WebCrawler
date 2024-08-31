@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  web:
+    image: myapp:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:8080"
+      ConnectionStrings__DefaultConnection: "Host=db;Database=postgres;Username=postgres;Password=admin"
+    networks:
+      - webnet
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      - webnet
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 10100:8080
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge

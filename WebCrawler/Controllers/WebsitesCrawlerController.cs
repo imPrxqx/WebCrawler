@@ -4,60 +4,104 @@ using System.Data;
 using Dapper;
 using MySql.Data.MySqlClient;
 using WebCrawler.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace WebCrawler.Controllers
 {
-    public class WebsitesCrawlerController : Controller
-    {
-        // GET: WebsitesCrawler/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+	public class WebsitesCrawlerController : Controller
+	{
+		// GET: WebsitesCrawler/CreateCrawler
+		public ActionResult CreateCrawler()
+		{
+			return View();
+		}
 
-        // POST: WebsitesCrawler/Create
-        [HttpPost]
-        public ActionResult WebsiteRecord(WebsiteRecordModel model)
-        {
-            if (ModelState.IsValid)
-            {
+		// GET: WebsitesCrawler/EditCrawler
+		public ActionResult EditCrawler()
+		{
+			return View();
+		}
 
-                string connectionString = "server=localhost;user=root;database=data;port=3306;password=";
-                string sqlSave = "INSERT INTO node (idNode, UrlMain, OtherNodes) VALUES (@IdNode, @UrlMain, @OtherNodes)";
+		// GET: WebsitesCrawler/Crawlers
+		public ActionResult Crawlers()
+		{
+			var articles = new List<WebsiteRecordModel>
+			{
+				new WebsiteRecordModel {Id = 1},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},                new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4}
+			};
 
-                SaveData(sqlSave, model, connectionString);
 
-                string sqlLoad = "SELECT * FROM node WHERE idNode = @IdNode";
-                List<WebsiteRecordModel> nodes = LoadData<WebsiteRecordModel, dynamic>(sqlLoad, model, connectionString);
-                foreach (var node in nodes)
-                {
-                    Console.WriteLine($"ID: {node.Id}, URL: {node.Url}, Other Nodes: {node.Label}");
-                }
+			return View(articles);
+		}
 
-                return RedirectToAction("Create");  
-            }
+		private readonly ApplicationDbContext _context;
 
-            return View(model);
-        }
+		public WebsitesCrawlerController(ApplicationDbContext context)
+		{
+			_context = context;
+		}
 
-        public List<T> LoadData<T, U>(string sql, U parameters, string connectionString)
-        {
-            using (IDbConnection connection = new MySqlConnection(connectionString))
-            {
-                List<T> row = connection.Query<T>(sql, parameters).ToList();
 
-                return row;
 
-            }
-        }
+		// POST: WebsitesCrawler/CreateCrawler
+		[HttpPost]
+		public async Task<IActionResult> CreateWebsiteRecord(WebsiteRecordModel model)
+		{
 
-        public void SaveData<T>(string sql, T parameters, string connectionString)
-        {
-            using (IDbConnection connection = new MySqlConnection(connectionString))
-            {
-                connection.Execute(sql, parameters);
-            }
-        }
-    }
+
+
+			try
+			{
+				var testRecord = await _context.WebsiteRecords.FirstOrDefaultAsync(); 
+
+				if (testRecord != null)
+				{
+					Console.WriteLine($"Úspěšně připojeno k databázi. Nalezený záznam: {testRecord.Id}");
+					return Content($"Úspěšně připojeno k databázi. Nalezený záznam: {testRecord.Id}");
+				}
+				else
+				{
+					Console.WriteLine("Úspěšně připojeno k databázi, ale žádné záznamy nebyly nalezeny.");
+					return Content("Úspěšně připojeno k databázi, ale žádné záznamy nebyly nalezeny.");
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Chyba při připojování k databázi: {ex.Message}");
+				return Content($"Chyba při připojování k databázi: {ex.Message}");
+			}
+		}
+
+
+
+		public List<T> LoadData<T, U>(string sql, U parameters, string connectionString)
+		{
+			using (IDbConnection connection = new MySqlConnection(connectionString))
+			{
+				List<T> row = connection.Query<T>(sql, parameters).ToList();
+
+				return row;
+
+			}
+		}
+
+		public void SaveData<T>(string sql, T parameters, string connectionString)
+		{
+			using (IDbConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Execute(sql, parameters);
+			}
+		}
+	}
 }
