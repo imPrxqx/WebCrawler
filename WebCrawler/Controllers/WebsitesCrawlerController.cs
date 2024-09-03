@@ -29,16 +29,16 @@ namespace WebCrawler.Controllers
 			var articles = new List<WebsiteRecordModel>
 			{
 				new WebsiteRecordModel {Id = 1},
-				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},                new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2, Tags="tag1-tag2-tag3"},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},                new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2, Url = "https://webik.ms.mff.cuni.cz/nswi153/seminar-project-webcrawler.html"},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3, Tags="tag8-tag5-tag5", Url = "https://webik.ms.mff.cuni.cz/nswi153/seminar-project-webcrawler.html"},new WebsiteRecordModel{Id = 4},
 				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
 				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
 				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
-				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
-				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
-				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
-				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
-				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4},
-				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3},new WebsiteRecordModel{Id = 4}
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3, Url = "https://webik.ms.mff.cuni.cz/nswi153/seminar-project-webcrawler.html"},new WebsiteRecordModel{Id = 4},
+				new WebsiteRecordModel{Id = 2},new WebsiteRecordModel{Id = 3, Tags="tag1-tag2-tag3"},new WebsiteRecordModel{Id = 4}
 			};
 
 

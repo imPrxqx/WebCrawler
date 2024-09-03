@@ -3,6 +3,8 @@
     ViewData["Title"] = "Article List";
 }
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -20,24 +22,41 @@
 			<div>
 				<hr>
 			</div>
-			
-			<div>		
-				<ul id="crawler-list">					
-					@foreach (var article in Model)
-					{
-						<li class="article" id="@article.Id">
-							<div>
-								<p>@article.Id</p>
-							</div>
-							<div>
-								<a href="~/article/@article.Id">Show</a>
-								<a href="~/article-edit/@article.Id">Edit</a>
-								<a class="delete">Delete</a>
-							</div>
-						</li>
-					}
-				</ul>				
-			</div>
+
+		<div>
+			<ul id="crawler-list">
+				@foreach (var article in Model)
+				{
+					<li class="article" id="@article.Id">
+						<div>
+							<p>@article.Id</p>
+							<p>@article.Url</p>
+
+						</div>
+
+						<div>
+							@{
+								TagsData tagsData = new TagsData();
+								tagsData.AddTags(article.Tags); 
+								var tags = tagsData.GetAllTags();
+
+								foreach (var tag in tags)
+								{
+									<span class="tag">@Html.Raw(tag.Key)</span>
+								}
+							}
+						</div>
+
+						<div>
+							<a href="@Url.Action("Show", "Article", new { id = article.Id })">Show</a>
+							<a href="@Url.Action("Edit", "Article", new { id = article.Id })">Edit</a>
+							<a class="delete">Delete</a>
+						</div>
+					</li>
+				}
+			</ul>
+		</div>
+
 			
 			<div>
 				<hr>
@@ -64,39 +83,69 @@
 		let end = 9;
 		const inc = end + 1;
 
-		filterAndShot();
+		filterAndShow();
 		getPageNum();
 
 		function nextPage() {
 			start += inc;
 			end += inc;
-			filterAndShot();
+			filterAndShow();
 			getPageNum();
 		}
 
 		function prevPage() {
 			start -= inc;
 			end -= inc;
-			filterAndShot();
+			filterAndShow();
 			getPageNum();
 		}
 
-		function filterAndShot() {
+		function filterAndShow() {
 			let input = document.getElementById('searchBarInput').value.toUpperCase();
+			let pieces = input.split(' ');
+			pieces = pieces.map(piece => piece.trim());
+
+
 			let articles = document.querySelectorAll(".article");
 			let numOfArticles = articles.length;
 			let filteredArticles = [];
 			let currentPage = Math.floor(start / (end - start + 1)) + 1;
 
+
 			for (let i = 0; i < numOfArticles; i++) {
-				let articleText = articles[i].getElementsByTagName("p")[0].textContent || articles[i].getElementsByTagName("p")[0].innerText;
-				if (articleText.toUpperCase().indexOf(input) > -1) {
-					articles[i].style.display = "block";
+				articles[i].style.display = "none";
+
+				let allPiecesMatch = true;
+				
+				let articleText = articles[i].getElementsByTagName("p")[0]?.textContent || articles[i].getElementsByTagName("p")[0]?.innerText || "";
+				let articleUrl = articles[i].getElementsByTagName("p")[1]?.textContent || articles[i].getElementsByTagName("p")[1]?.innerText || "";
+				let tagElements = articles[i].querySelectorAll(".tag");
+
+				pieces.forEach(piece => {
+					let pieceInText = articleText.toUpperCase().indexOf(piece.toUpperCase()) > -1;
+
+					let pieceInUrl = articleUrl.toUpperCase().indexOf(piece.toUpperCase()) > -1;
+
+
+					let pieceInTags = Array.from(tagElements).some(tagElement => {
+						let tagText = tagElement.textContent || tagElement.innerText || "";
+						return tagText.toUpperCase().indexOf(piece.toUpperCase()) > -1;
+					});
+
+					if (!pieceInText && !pieceInUrl && !pieceInTags) {
+						allPiecesMatch = false;
+						return;
+					}
+				});
+
+
+
+				
+				if (allPiecesMatch === true) {
 					filteredArticles.push(articles[i]);
-				} else {
-					articles[i].style.display = "none";
-				}
+				} 
 			}
+
 
 			let filteredNumOfArticles = filteredArticles.length;
 
@@ -128,7 +177,7 @@
 		function searchFunction() {
 			start = 0;
 			end = 9;
-			filterAndShot();
+			filterAndShow();
 			getPageNum();
 		}
 
