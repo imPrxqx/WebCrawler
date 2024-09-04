@@ -7,5 +7,15 @@ CREATE TABLE "WebsiteRecord" (
     "Minutes" INT NOT NULL,
     "Label" VARCHAR(255) NOT NULL,
     "IsActive" BOOLEAN NOT NULL,
-    "Tags" VARCHAR(255) NOT NULL
+    "Tags" VARCHAR(255)
+);
+
+CREATE TABLE "Node" (
+    "Id" SERIAL PRIMARY KEY,
+    "title" VARCHAR(255) NOT NULL,
+    "crawlTime" VARCHAR(255) NOT NULL,
+    "UrlMain" VARCHAR(255) NOT NULL,
+    "UrlsNeighbours" VARCHAR(255) NOT NULL,
+    "WebsiteRecordId" INT,
+    FOREIGN KEY ("WebsiteRecordId") REFERENCES "WebsiteRecord"("Id") 
 );
