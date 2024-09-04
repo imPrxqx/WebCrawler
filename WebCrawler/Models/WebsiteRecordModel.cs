@@ -1,23 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
+using WebCrawler.Views;
 
 namespace WebCrawler.Models
 {
-	[Table("WebsiteRecord")]
-	public class WebsiteRecordModel
-	{
-		public int Id { get; set; }
+    [Table("WebsiteRecord")]
+    public class WebsiteRecordModel
+    {
+        public int Id { get; set; }
 
-		public string Url { get; set; } = string.Empty; 
-		public string BoundaryRegExp { get; set; } = string.Empty;
+        public string Url { get; set; } = string.Empty;
+        public string BoundaryRegExp { get; set; } = string.Empty;
 
-		public int Days { get; set; }
-		public int Hours { get; set; }
-		public int Minutes { get; set; }
+        public int Days { get; set; }
+        public int Hours { get; set; }
+        public int Minutes { get; set; }
 
-		public string Label { get; set; } = string.Empty;
-		public bool IsActive { get; set; }
-		public string Tags { get; set; } = string.Empty;
-	}
-
-
+        public string? Label { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
+        public string? Tags { get; set; } = string.Empty;
+    }
 }
