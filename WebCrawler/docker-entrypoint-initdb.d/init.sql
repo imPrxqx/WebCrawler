@@ -15,7 +15,14 @@ CREATE TABLE "Node" (
     "title" VARCHAR(255) NOT NULL,
     "crawlTime" VARCHAR(255) NOT NULL,
     "UrlMain" VARCHAR(255) NOT NULL,
-    "UrlsNeighbours" VARCHAR(255) NOT NULL,
     "WebsiteRecordId" INT,
     FOREIGN KEY ("WebsiteRecordId") REFERENCES "WebsiteRecord"("Id") 
 );
+
+CREATE TABLE NodeNeighbours (
+    "NodeId" INT,
+    "NeighbourNodeId" INT,
+    PRIMARY KEY ("NodeId", "NeighbourNodeId"),
+    FOREIGN KEY ("NodeId") REFERENCES "Node"("Id"),
+    FOREIGN KEY ("NeighbourNodeId") REFERENCES "Node"("Id")
+)
