@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebCrawler.Views
+namespace WebCrawler.Models
 {
     [Table("Node")]
     public class NodeModel
@@ -10,8 +10,11 @@ namespace WebCrawler.Views
         public string crawlTime { get; set; }
 
         public Uri UrlMain { get; set; }
-        public List<Uri> UrlsNeighbours { get; set; } = new List<Uri>();
+        public List<NodeModel> UrlsNeighbours { get; set; } = new List<NodeModel>();
 
-        public int WebsiteRecord { get; set; }
+        public int WebsiteRecordId { get; set; }
+
+        [ForeignKey("WebsiteRecordId")]
+        public WebsiteRecordModel WebsiteRecord { get; set; }
     }
 }

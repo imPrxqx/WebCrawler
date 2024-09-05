@@ -1,5 +1,6 @@
 using WebCrawler.Models;
 using Microsoft.EntityFrameworkCore;
+using WebCrawler.GraphQl;
 
 namespace WebCrawler
 {
@@ -12,8 +13,9 @@ namespace WebCrawler
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 			builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddGraphQLServer().AddQueryType<Query>().AddType<WebCrawler.GraphQl.WebPage>().AddType<WebCrawler.GraphQl.Node>().RegisterService<ApplicationDbContext>();
 
-			var app = builder.Build();
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -33,6 +35,8 @@ namespace WebCrawler
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            
+            app.MapGraphQL();
 
             app.Run();
         }

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using WebCrawler.Views;
 
 namespace WebCrawler.Models
 {
@@ -18,5 +17,8 @@ namespace WebCrawler.Models
         public string? Label { get; set; } = string.Empty;
         public bool IsActive { get; set; }
         public string? Tags { get; set; } = string.Empty;
+
+        public List<NodeModel> Nodes { get; set; }
+
     }
 }
