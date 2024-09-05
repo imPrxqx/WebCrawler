@@ -18,15 +18,33 @@ namespace WebCrawler.Controllers
         }
 
         // GET: WebsitesCrawler/EditCrawler
-        public ActionResult EditCrawler()
+        public ActionResult EditCrawler(int id)
         {
-            return View();
+            string sql =
+                @"
+        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags""
+        FROM public.""WebsiteRecord"";
+    ";
+
+            var crawlers = DataAccess.LoadData<WebsiteRecordModel, dynamic>(
+                sql,
+                new { },
+                _connectionString
+            );
+
+            var crawler = crawlers.FirstOrDefault(c => c.Id == id);
+
+            if (crawler == null)
+            {
+                return NotFound($"Crawler with ID {id} not found.");
+            }
+
+            return View(crawler);
         }
 
         // GET: WebsitesCrawler/Crawlers
         public ActionResult Crawlers()
         {
-            string connectionString = GetConnectionString();
             ;
             string sql =
                 @"
@@ -37,18 +55,20 @@ namespace WebCrawler.Controllers
             var articles = DataAccess.LoadData<WebsiteRecordModel, dynamic>(
                 sql,
                 new { },
-                connectionString
+                _connectionString
             );
 
             return View(articles);
         }
 
         private readonly ApplicationDbContext _context;
+        private readonly string _connectionString;
 
         public WebsitesCrawlerController(ApplicationDbContext context)
         {
             _context = context;
             Env.Load();
+            _connectionString = GetConnectionString();
         }
 
         private string GetConnectionString()
@@ -66,32 +86,10 @@ namespace WebCrawler.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateWebsiteRecord(WebsiteRecordModel model)
         {
-            if (
-                (model.Minutes < 0 || model.Minutes > 60)
-                || (model.Hours < 0 || model.Hours > 24)
-                || model.Days < 0
-                || model.Days > 31
-                || string.IsNullOrWhiteSpace(model.Url)
-                || string.IsNullOrWhiteSpace(model.BoundaryRegExp)
-            )
+            if (DataVerifier.WebsiteRecordVerifier(model))
             {
-                return (Content($"Record badly filled: {model.Id}"));
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(model.Label))
-                {
-                    model.Label = model.Url;
-                }
-
-                if (string.IsNullOrWhiteSpace(model.Tags))
-                {
-                    model.Tags = null;
-                }
-
                 try
                 {
-                    string connectionString = GetConnectionString();
                     string sql =
                         @"
     INSERT INTO public.""WebsiteRecord"" 
@@ -100,7 +98,7 @@ namespace WebCrawler.Controllers
     (@Url, @BoundaryRegExp, @Days, @Hours, @Minutes, @Label, @IsActive, @Tags);
 ";
 
-                    DataAccess.SaveData(sql, model, connectionString);
+                    DataAccess.SaveData(sql, model, _connectionString);
 
                     Console.WriteLine($"Record added successfully: {model.Id}");
                     return Content($"Record added successfully: {model.Id}");
@@ -110,6 +108,10 @@ namespace WebCrawler.Controllers
                     Console.WriteLine($"Chyba při připojování k databázi: {ex.Message}");
                     return Content($"Chyba při připojování k databázi: {ex.Message}");
                 }
+            }
+            else
+            {
+                return (Content($"Record badly filled: {model.Id}"));
             }
         }
     }
