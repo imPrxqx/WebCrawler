@@ -19,7 +19,7 @@ CREATE TABLE "Node" (
     FOREIGN KEY ("WebsiteRecordId") REFERENCES "WebsiteRecord"("Id") 
 );
 
-CREATE TABLE NodeNeighbours (
+CREATE TABLE "NodeNeighbours" (
     "NodeId" INT,
     "NeighbourNodeId" INT,
     PRIMARY KEY ("NodeId", "NeighbourNodeId"),
