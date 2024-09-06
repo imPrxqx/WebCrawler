@@ -15,7 +15,7 @@ namespace WebCrawler.Models
         public int Minutes { get; set; }
         public string Label { get; set; }
         public bool IsActive { get; set; }
-        public string Tags { get; set; }
+        public string? Tags { get; set; }
     }
 
     [Table("Node")]
