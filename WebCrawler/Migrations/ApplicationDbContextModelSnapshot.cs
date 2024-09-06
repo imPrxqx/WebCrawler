@@ -29,30 +29,41 @@ namespace WebCrawler.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CrawlTime")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("UrlMain")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string[]>("UrlsNeighbours")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
                     b.Property<int>("WebsiteRecordId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("crawlTime")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("title")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("WebsiteRecordId");
 
                     b.ToTable("Node", (string)null);
+                });
+
+            modelBuilder.Entity("WebCrawler.Models.NodeNeighbourModel", b =>
+                {
+                    b.Property<int>("NodeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NeighbourNodeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("NodeId", "NeighbourNodeId");
+
+                    b.HasIndex("NeighbourNodeId");
+
+                    b.ToTable("NodeNeighbour", (string)null);
                 });
 
             modelBuilder.Entity("WebCrawler.Models.WebsiteRecordModel", b =>
@@ -77,12 +88,14 @@ namespace WebCrawler.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Label")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Minutes")
                         .HasColumnType("integer");
 
                     b.Property<string>("Tags")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Url")
@@ -103,6 +116,30 @@ namespace WebCrawler.Migrations
                         .IsRequired();
 
                     b.Navigation("WebsiteRecord");
+                });
+
+            modelBuilder.Entity("WebCrawler.Models.NodeNeighbourModel", b =>
+                {
+                    b.HasOne("WebCrawler.Models.NodeModel", "NeighbourNode")
+                        .WithMany()
+                        .HasForeignKey("NeighbourNodeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WebCrawler.Models.NodeModel", "Node")
+                        .WithMany("Neighbours")
+                        .HasForeignKey("NodeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("NeighbourNode");
+
+                    b.Navigation("Node");
+                });
+
+            modelBuilder.Entity("WebCrawler.Models.NodeModel", b =>
+                {
+                    b.Navigation("Neighbours");
                 });
 
             modelBuilder.Entity("WebCrawler.Models.WebsiteRecordModel", b =>

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Mysqlx.Crud;
 using WebCrawler.Models;
 
 namespace WebCrawler.GraphQl
@@ -7,7 +9,7 @@ namespace WebCrawler.GraphQl
     {
         public async Task<IEnumerable<WebPage>> GetWebsites([Service] ApplicationDbContext context)
         {
-            var records = await context.WebsiteRecords.ToListAsync();
+            List<WebsiteRecordModel> records = await context.WebsiteRecords.ToListAsync();
 
 
             return records.Select(record => new WebPage
@@ -24,21 +26,62 @@ namespace WebCrawler.GraphQl
         
         public async Task<IEnumerable<Node>> GetNodes([ID] List<int>? webPages, [Service] ApplicationDbContext context)
         {
-            var records = context.NodeRecords.AsQueryable();
+            List<NodeModel> records = await context.NodeRecords.ToListAsync();
 
             if (webPages != null && webPages.Any())
             {
-                records = records.Where(node => webPages.Contains(node.WebsiteRecordId));
+                records = records.Where(node => webPages.Contains(node.WebsiteRecordId)).ToList();
             }
 
+     
+            Dictionary<int, Node> nodes = new Dictionary<int, Node>();
+
+
+            foreach(var record in records)
+            {
+                nodes.Add(record.Id, new Node
+                {
+                    Title = record.Title,
+                    Url = record.UrlMain,
+                    CrawlTime = record.CrawlTime,
+                    Owner = new WebPage
+                    {
+                        Identifier = record.WebsiteRecord.Id,
+                        Url = record.WebsiteRecord.Url,
+                        Label = record.WebsiteRecord.Label,
+                        Tags = record.WebsiteRecord.Tags.Split('-').ToList(),
+                        Active = record.WebsiteRecord.IsActive,
+                        Regexp = record.WebsiteRecord.BoundaryRegExp,
+                    },
+                    Links = new List<Node>()
+                });
+            }
+
+            List<NodeNeighbourModel> recordsMany = await context.NodeNeighbours.ToListAsync();
+
+            foreach (var record in recordsMany)
+            {
+                nodes[record.NodeId].Links.Add(nodes[record.NeighbourNodeId]);
+                nodes[record.NeighbourNodeId].Links.Add(nodes[record.NodeId]);
+            }
 
 
             return records.Select(record => new Node
             {
-                Title = record.title,
-                Url = record.UrlMain.ToString(),
-                CrawlTime = record.crawlTime,
 
+                Title = record.Title,
+                Url = record.UrlMain,
+                CrawlTime = record.CrawlTime,          
+                Owner = new WebPage
+                {
+                    Identifier = record.WebsiteRecord.Id,
+                    Url = record.WebsiteRecord.Url,
+                    Label = record.WebsiteRecord.Label,
+                    Tags = record.WebsiteRecord.Tags.Split('-').ToList(),
+                    Active = record.WebsiteRecord.IsActive,
+                    Regexp = record.WebsiteRecord.BoundaryRegExp,
+                },
+                Links = nodes[record.Id].Links,
             }).ToList();
 
         }
