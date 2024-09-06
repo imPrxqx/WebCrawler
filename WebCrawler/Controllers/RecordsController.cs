@@ -33,7 +33,7 @@ namespace WebCrawler.Controllers
 		[HttpGet]
 		public IEnumerable<WebsiteRecordModel> Get()
 		{
-			;
+			
 			string sql =
 				@"
         SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags""
