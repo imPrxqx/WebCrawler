@@ -16,7 +16,6 @@ namespace WebCrawler.Models
         public string Label { get; set; }
         public bool IsActive { get; set; }
         public string Tags { get; set; }
-        public List<NodeModel> Nodes { get; set; }
     }
 
     [Table("Node")]
@@ -26,25 +25,15 @@ namespace WebCrawler.Models
         public string Title { get; set; }
         public string CrawlTime { get; set; }
         public string UrlMain { get; set; }
-        public int WebsiteRecordId { get; set; }
-
-
-        [ForeignKey("WebsiteRecordId")]
-        public WebsiteRecordModel WebsiteRecord { get; set; }
-        public List<NodeNeighbourModel> Neighbours { get; set; }
+        public int WebsiteRecordId { get; set; } 
     }
+
 
     [Table("NodeNeighbour")]
     public class NodeNeighbourModel
     {
         public int NodeId { get; set; }
-
         public int NeighbourNodeId { get; set; }
-
-        [ForeignKey("NodeId")]
-        public NodeModel Node { get; set; }
-
-        [ForeignKey("NeighbourNodeId")]
-        public NodeModel NeighbourNode { get; set; }
     }
+
 }

@@ -14,21 +14,22 @@ namespace WebCrawler.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<WebsiteRecordModel>().ToTable("WebsiteRecord");
-            modelBuilder.Entity<NodeModel>().ToTable("Node");
-            modelBuilder.Entity<NodeNeighbourModel>().ToTable("NodeNeighbour");
+            modelBuilder.Entity<NodeModel>()
+                       .HasOne<WebsiteRecordModel>()
+                       .WithMany()
+                       .HasForeignKey(n => n.WebsiteRecordId);
 
             modelBuilder.Entity<NodeNeighbourModel>()
-                           .HasKey(nn => new { nn.NodeId, nn.NeighbourNodeId });
+                .HasKey(nn => new { nn.NodeId, nn.NeighbourNodeId });
 
             modelBuilder.Entity<NodeNeighbourModel>()
-                .HasOne(nn => nn.Node)
-                .WithMany(n => n.Neighbours)
+                .HasOne<NodeModel>()
+                .WithMany()
                 .HasForeignKey(nn => nn.NodeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<NodeNeighbourModel>()
-                .HasOne(nn => nn.NeighbourNode)
+                .HasOne<NodeModel>()
                 .WithMany()
                 .HasForeignKey(nn => nn.NeighbourNodeId)
                 .OnDelete(DeleteBehavior.Restrict);
