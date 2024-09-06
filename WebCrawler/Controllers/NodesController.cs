@@ -12,7 +12,7 @@ namespace WebCrawler.Controllers
     {
         private readonly string _connectionString;
 
-        public NodeController(ApplicationDbContext context)
+        public NodesController(ApplicationDbContext context)
         {
             Env.Load();
             _connectionString = GetConnectionString();
