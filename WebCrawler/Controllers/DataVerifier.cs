@@ -28,7 +28,7 @@ namespace WebCrawler.Controllers
 
 			if (string.IsNullOrWhiteSpace(model.Tags))
 			{
-				model.Tags = null;
+				model.Tags = "";
 			}
 			return true;
 		}
