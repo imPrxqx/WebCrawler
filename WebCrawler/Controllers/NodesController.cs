@@ -94,9 +94,6 @@ namespace WebCrawler.Controllers
     ";
                     try
                     {
-                        Console.WriteLine(
-                            $"Attempting to insert Node with Title: {model.Title}, CrawlTime: {model.CrawlTime}, UrlMain: {model.UrlMain}, WebsiteRecordId: {model.WebsiteRecordId}"
-                        );
                         DataAccess.SaveData(
                             sql,
                             new
