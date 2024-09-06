@@ -48,7 +48,7 @@ namespace WebCrawler.Migrations
 
                     b.HasIndex("WebsiteRecordId");
 
-                    b.ToTable("Node", (string)null);
+                    b.ToTable("Node");
                 });
 
             modelBuilder.Entity("WebCrawler.Models.NodeNeighbourModel", b =>
@@ -63,7 +63,7 @@ namespace WebCrawler.Migrations
 
                     b.HasIndex("NeighbourNodeId");
 
-                    b.ToTable("NodeNeighbour", (string)null);
+                    b.ToTable("NodeNeighbour");
                 });
 
             modelBuilder.Entity("WebCrawler.Models.WebsiteRecordModel", b =>
@@ -104,47 +104,31 @@ namespace WebCrawler.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WebsiteRecord", (string)null);
+                    b.ToTable("WebsiteRecord");
                 });
 
             modelBuilder.Entity("WebCrawler.Models.NodeModel", b =>
                 {
-                    b.HasOne("WebCrawler.Models.WebsiteRecordModel", "WebsiteRecord")
-                        .WithMany("Nodes")
+                    b.HasOne("WebCrawler.Models.WebsiteRecordModel", null)
+                        .WithMany()
                         .HasForeignKey("WebsiteRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("WebsiteRecord");
                 });
 
             modelBuilder.Entity("WebCrawler.Models.NodeNeighbourModel", b =>
                 {
-                    b.HasOne("WebCrawler.Models.NodeModel", "NeighbourNode")
+                    b.HasOne("WebCrawler.Models.NodeModel", null)
                         .WithMany()
                         .HasForeignKey("NeighbourNodeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WebCrawler.Models.NodeModel", "Node")
-                        .WithMany("Neighbours")
+                    b.HasOne("WebCrawler.Models.NodeModel", null)
+                        .WithMany()
                         .HasForeignKey("NodeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("NeighbourNode");
-
-                    b.Navigation("Node");
-                });
-
-            modelBuilder.Entity("WebCrawler.Models.NodeModel", b =>
-                {
-                    b.Navigation("Neighbours");
-                });
-
-            modelBuilder.Entity("WebCrawler.Models.WebsiteRecordModel", b =>
-                {
-                    b.Navigation("Nodes");
                 });
 #pragma warning restore 612, 618
         }
