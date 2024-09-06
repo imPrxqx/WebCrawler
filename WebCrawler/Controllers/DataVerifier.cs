@@ -44,5 +44,28 @@ namespace WebCrawler.Controllers
             );
             return result.Any();
         }
+
+        public static bool AreNodesFromSameWebsiteRecord(
+            int nodeId,
+            int neighbourNodeId,
+            string connectionString
+        )
+        {
+            string sql =
+                @"
+                SELECT n1.""WebsiteRecordId"", n2.""WebsiteRecordId""
+                FROM ""Node"" n1
+                INNER JOIN ""Node"" n2 ON n1.""WebsiteRecordId"" = n2.""WebsiteRecordId""
+                WHERE n1.""Id"" = @NodeId AND n2.""Id"" = @NeighbourNodeId;
+            ";
+
+            var result = DataAccess.LoadData<dynamic, dynamic>(
+                sql,
+                new { NodeId = nodeId, NeighbourNodeId = neighbourNodeId },
+                connectionString
+            );
+
+            return result.Any();
+        }
     }
 }
