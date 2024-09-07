@@ -11,6 +11,100 @@ namespace WebCrawler.Controllers
 {
     public class WebsitesCrawlerController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        private readonly string _connectionString;
+
+        private string GetConnectionString()
+        {
+            string databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME");
+            string databasePass = Environment.GetEnvironmentVariable("DATABASE_PASS");
+            string databaseUser = Environment.GetEnvironmentVariable("DATABASE_USER");
+            string databaseServer = Environment.GetEnvironmentVariable("DATABASE_SERVER");
+            string databasePort = Environment.GetEnvironmentVariable("DATABASE_PORT");
+
+            return $"Host={databaseServer};Port={databasePort};Username={databaseUser};Password={databasePass};Database={databaseName};";
+        }
+
+        public ActionResult CreateEditCrawler(int? id)
+        {
+            WebsiteRecordModel model;
+
+            if (id.HasValue)
+            {
+                string sql =
+                    @"
+            SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags""
+            FROM public.""WebsiteRecord""
+            WHERE ""Id"" = @Id;
+        ";
+
+                model = DataAccess
+                    .LoadData<WebsiteRecordModel, dynamic>(
+                        sql,
+                        new { Id = id.Value },
+                        _connectionString
+                    )
+                    .FirstOrDefault();
+
+                if (model == null)
+                {
+                    model = new WebsiteRecordModel();
+                    model.Id = id.Value;
+                }
+            }
+            else
+            {
+                // Initialize new model
+                model = new WebsiteRecordModel();
+            }
+
+            return View("CreateEdit", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveCrawler(WebsiteRecordModel model)
+        {
+            if (DataVerifier.WebsiteRecordVerifier(model))
+            {
+                try
+                {
+                    string sql;
+                    if (DataVerifier.DoesWebsiteRecordExist(model.Id, _connectionString))
+                    {
+                        sql =
+                            @"
+                    UPDATE public.""WebsiteRecord"" 
+                    SET ""Url"" = @Url, ""BoundaryRegExp"" = @BoundaryRegExp, ""Days"" = @Days, 
+                        ""Hours"" = @Hours, ""Minutes"" = @Minutes, ""Label"" = @Label, 
+                        ""IsActive"" = @IsActive, ""Tags"" = @Tags
+                    WHERE ""Id"" = @Id;
+                ";
+
+                        DataAccess.SaveData(sql, model, _connectionString);
+                    }
+                    else
+                    {
+                        sql =
+                            @"
+                    INSERT INTO public.""WebsiteRecord"" 
+                    (""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"") 
+                    VALUES 
+                    (@Url, @BoundaryRegExp, @Days, @Hours, @Minutes, @Label, @IsActive, @Tags)
+                    RETURNING ""Id"";
+                ";
+
+                        DataAccess.SaveData(sql, model, _connectionString);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Content($"Error connecting to database: {ex.Message}");
+                }
+            }
+
+            return Content($"Record added successfully: {model.Id}");
+        }
+
         // GET: WebsitesCrawler/CreateCrawler
         public ActionResult CreateCrawler()
         {
@@ -61,25 +155,11 @@ namespace WebCrawler.Controllers
             return View(articles);
         }
 
-        private readonly ApplicationDbContext _context;
-        private readonly string _connectionString;
-
         public WebsitesCrawlerController(ApplicationDbContext context)
         {
             _context = context;
             Env.Load();
             _connectionString = GetConnectionString();
-        }
-
-        private string GetConnectionString()
-        {
-            string databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME");
-            string databasePass = Environment.GetEnvironmentVariable("DATABASE_PASS");
-            string databaseUser = Environment.GetEnvironmentVariable("DATABASE_USER");
-            string databaseServer = Environment.GetEnvironmentVariable("DATABASE_SERVER");
-            string databasePort = Environment.GetEnvironmentVariable("DATABASE_PORT");
-
-            return $"Host={databaseServer};Port={databasePort};Username={databaseUser};Password={databasePass};Database={databaseName};";
         }
 
         // POST: WebsitesCrawler/CreateCrawler
