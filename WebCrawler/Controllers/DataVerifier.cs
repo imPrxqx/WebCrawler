@@ -7,16 +7,34 @@ namespace WebCrawler.Controllers
     {
         public static bool WebsiteRecordVerifier(WebsiteRecordModel model)
         {
+            if (model == null)
+                return false;
+
+            if (!int.TryParse(model.Minutes.ToString(), out int minutes))
+            {
+                model.Minutes = 0;
+            }
+
+            if (!int.TryParse(model.Hours.ToString(), out int hours))
+            {
+                model.Hours = 0;
+            }
+
+            if (!int.TryParse(model.Days.ToString(), out int days))
+            {
+                model.Days = 0;
+            }
+
             if (
                 model == null
-                || model.Minutes < 0
-                || model.Minutes > 60
-                || model.Hours < 0
-                || model.Hours > 24
-                || model.Days < 0
-                || model.Days > 31
-                || string.IsNullOrWhiteSpace(model.Url)
-                || string.IsNullOrWhiteSpace(model.BoundaryRegExp)
+                && model.Minutes <= 0
+                && model.Minutes > 60
+                && model.Hours <= 0
+                && model.Hours > 24
+                && model.Days <= 0
+                && model.Days > 31
+                && string.IsNullOrWhiteSpace(model.Url)
+                && string.IsNullOrWhiteSpace(model.BoundaryRegExp)
             )
             {
                 return false;
@@ -30,6 +48,11 @@ namespace WebCrawler.Controllers
             if (string.IsNullOrWhiteSpace(model.Tags))
             {
                 model.Tags = "";
+            }
+
+            if (model.LastChange == default(DateTime))
+            {
+                model.LastChange = DateTime.Now;
             }
             return true;
         }
