@@ -9,6 +9,10 @@ namespace WebCrawler.Controllers
         {
             if (model == null)
                 return false;
+            if (!bool.TryParse(model.IsActive.ToString(), out bool isActive))
+            {
+                model.IsActive = false;
+            }
 
             if (!int.TryParse(model.Minutes.ToString(), out int minutes))
             {
@@ -32,7 +36,7 @@ namespace WebCrawler.Controllers
                 && model.Hours <= 0
                 && model.Hours > 24
                 && model.Days <= 0
-                && model.Days >= 31
+                && model.Days > 31
                 && string.IsNullOrWhiteSpace(model.Url)
                 && string.IsNullOrWhiteSpace(model.BoundaryRegExp)
             )
