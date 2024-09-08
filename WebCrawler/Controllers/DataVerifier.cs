@@ -54,10 +54,6 @@ namespace WebCrawler.Controllers
                 model.Tags = "";
             }
 
-            if (model.LastChange == default(DateTime))
-            {
-                model.LastChange = DateTime.Now;
-            }
             return true;
         }
 
