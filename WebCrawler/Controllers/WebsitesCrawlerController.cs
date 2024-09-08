@@ -54,7 +54,6 @@ namespace WebCrawler.Controllers
             }
             else
             {
-                // Initialize new model
                 model = new WebsiteRecordModel();
             }
 
