@@ -1,4 +1,4 @@
-﻿@model List<WebCrawler.Models.WebsiteRecordModel>
+@model List<WebCrawler.Models.WebsiteRecordModel>
 @{
     ViewData["Title"] = "Article List";
 }
@@ -42,15 +42,15 @@
 
 								foreach (var tag in tags)
 								{
-									<span class="tag">@Html.Raw(tag.Key)</span>
+										<span class="tag">@Html.Raw(tag.Key)</span>
 								}
 							}
 						</div>
 
 						<div>
 							<a href="@Url.Action("Show", "Article", new { id = article.Id })">Show</a>
-							<a href="@Url.Action("Edit", "Article", new { id = article.Id })">Edit</a>
-							<a class="delete">Delete</a>
+							<a href="@Url.Action("CreateEditCrawler", "WebsitesCrawler", new { id = article.Id })">Edit</a>
+							<a href="" onclick="deleteRecord(@article.Id)">Delete</a>
 						</div>
 					</li>
 				}
@@ -181,6 +181,34 @@
 			getPageNum();
 		}
 
+		function deleteRecord(id) {
+			event.preventDefault();
+
+			fetch(`/WebsitesCrawler/DeleteCrawler?id=${id}`, {
+				method: 'DELETE'
+			})
+				.then(response => {
+					if (!response.ok) {
+						throw new Error("Couldn't remove article");
+					}
+
+					let article = document.querySelector(`.article-${id}`) || document.getElementById(id);
+					if (article) {
+						article.parentNode.removeChild(article);
+						if (start >= document.querySelectorAll(".article").length && (end - inc) > 0) {
+							start -= inc;
+							end -= inc;
+						}
+						filterAndShow(); 
+						getPageNum(); 
+					} else {
+						throw new Error("Article doesn't exist");
+					}
+				})
+				.catch(error => {
+					alert(error.message);
+				});
+		}
 
 		</script>
 	</body>
