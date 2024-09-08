@@ -174,15 +174,29 @@ namespace WebCrawler.Controllers
 		[HttpDelete("{id}")]
 		public void Delete(int id)
 		{
-			string sql =
-				@"
-    DELETE FROM public.""WebsiteRecord""
-    WHERE ""Id"" = @Id;
-";
-
 			try
 			{
-				DataAccess.SaveData(sql, new { Id = id }, _connectionString);
+				string deleteNodeNeighboursSql =
+					@"
+                    DELETE FROM public.""NodeNeighbours""
+                    WHERE ""NodeId"" IN (SELECT ""Id"" FROM public.""Node"" WHERE ""WebsiteRecordId"" = @Id)
+                    OR ""NeighbourNodeId"" IN (SELECT ""Id"" FROM public.""Node"" WHERE ""WebsiteRecordId"" = @Id);
+                ";
+				DataAccess.SaveData(deleteNodeNeighboursSql, new { Id = id }, _connectionString);
+
+				string deleteNodesSql =
+					@"
+                    DELETE FROM public.""Node""
+                    WHERE ""WebsiteRecordId"" = @Id;
+                ";
+				DataAccess.SaveData(deleteNodesSql, new { Id = id }, _connectionString);
+
+				string deleteCrawlerSql =
+					@"
+                    DELETE FROM public.""WebsiteRecord""
+                    WHERE ""Id"" = @Id;
+                ";
+				DataAccess.SaveData(deleteCrawlerSql, new { Id = id }, _connectionString);
 
 				Console.WriteLine($"Record with Id {id} deleted successfully.");
 			}
