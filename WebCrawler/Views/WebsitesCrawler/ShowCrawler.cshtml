@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crawler Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.22.0/dist/cytoscape.min.js"></script>
+    <style>
+        #cy {
+            width: 100%;
+            height: 600px;
+            border: 1px solid black;
+        }
+
+        .node-info {
+            display: none;
+            position: absolute;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            z-index: 1000;
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Crawler Graph</h1>
+    <div>
+        <label>
+            View Mode:
+            <select id="view-mode">
+                <option value="website">Website View</option>
+                <option value="domain">Domain View</option>
+            </select>
+        </label>
+        <label>
+            Data Mode:
+            <select id="data-mode">
+                <option value="static">Static</option>
+                <option value="live">Live</option>
+            </select>
+        </label>
+        <label>
+            Web Page IDs (comma separated):
+            <input type="text" id="web-page-ids" value="1,2,3,4">
+        </label>
+        <button id="update-graph">Update Graph</button>
+    </div>
+    <div id="cy"></div>
+    <div id="node-info" class="node-info"></div>
+    <script>
+        let isLive = false;
+        let intervalId = null;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const viewModeSelect = document.getElementById('view-mode');
+            const dataModeSelect = document.getElementById('data-mode');
+            const updateGraphButton = document.getElementById('update-graph');
+
+            fetchData();
+
+            viewModeSelect.addEventListener('change', fetchData);
+            dataModeSelect.addEventListener('change', toggleDataMode);
+            updateGraphButton.addEventListener('click', fetchData);
+
+            function toggleDataMode() {
+                const selectedMode = dataModeSelect.value;
+                isLive = selectedMode === 'live';
+
+                if (isLive) {
+                    intervalId = setInterval(fetchData, 60000); // Fetch data every 60 seconds
+                } else {
+                    clearInterval(intervalId);
+                }
+            }
+
+            function fetchData() {
+                const selectedView = viewModeSelect.value;
+                const webPageIds = document.getElementById('web-page-ids').value.split(',').map(id => id.trim()).join(',');
+
+                fetch(`../../graphql?query=query { nodes(webPages: [${webPageIds}]) { title crawlTime url links { url } owner { active identifier regexp url } } }`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const elements = convertJsonToCytoscapeElements(data, selectedView);
+
+                        const cy = cytoscape({
+                            container: document.getElementById('cy'),
+                            elements: elements,
+                            layout: { name: 'grid' },
+                            style: [
+                                {
+                                    selector: 'node',
+                                    style: {
+                                        'background-color': '#666',
+                                        'label': 'data(label)',
+                                        'shape': 'data(shape)'
+                                    }
+                                },
+                                {
+                                    selector: 'edge',
+                                    style: {
+                                        'width': 2,
+                                        'line-color': '#ccc',
+                                        'curve-style': 'bezier',
+                                        'target-arrow-shape': 'triangle',
+                                        'target-arrow-color': '#ccc'
+                                    }
+                                }
+                            ]
+                        });
+
+                        cy.on('tap', 'node', function (event) {
+                            const node = event.target;
+                            const nodeInfo = document.getElementById('node-info');
+                            const position = node.renderedPosition();
+                            nodeInfo.innerHTML = `
+                                        URL: ${node.data('id')}<br>
+                                        Title: ${node.data('label')}<br>
+                                        <button id="create-execution">Create Execution</button>
+                                    `;
+                            nodeInfo.style.left = `${position.x + 10}px`;
+                            nodeInfo.style.top = `${position.y + 10}px`;
+                            nodeInfo.style.display = 'block';
+
+                            document.getElementById('create-execution').addEventListener('click', function () {
+                                createExecution(node.data('id'), node.data('owner').regexp);
+                            });
+                        });
+
+                        cy.on('dblclick', 'node', function (event) {
+                            const node = event.target;
+                            const nodeInfo = document.getElementById('node-info');
+                            const position = node.renderedPosition();
+                            nodeInfo.innerHTML = `
+                                        URL: ${node.data('id')}<br>
+                                        Title: ${node.data('label')}<br>
+                                        Crawl Time: ${node.data('crawlTime')}<br>
+                                        Owner URL: ${node.data('owner').url}<br>
+                                        Regexp: ${node.data('owner').regexp}<br>
+                                        <button id="create-execution">Create Execution</button>
+                                    `;
+                            nodeInfo.style.left = `${position.x + 10}px`;
+                            nodeInfo.style.top = `${position.y + 10}px`;
+                            nodeInfo.style.display = 'block';
+
+                            document.getElementById('create-execution').addEventListener('click', function () {
+                                createExecution(node.data('id'), node.data('owner').regexp);
+                            });
+                        });
+
+                        cy.on('pan', function () {
+                            document.getElementById('node-info').style.display = 'none';
+                        });
+
+                        document.addEventListener('click', function (event) {
+                            const nodeInfo = document.getElementById('node-info');
+                            if (!event.target.closest('#node-info') && !event.target.closest('#cy')) {
+                                nodeInfo.style.display = 'none';
+                            }
+                        });
+                    })
+                    .catch(error => console.error('Error fetching or processing data:', error));
+            }
+
+            // TODO: pouzit REST API pro vytvoreni execution
+            function createExecution(nodeUrl, boundary) {
+                const apiUrl = `${window.location.origin}/api/Records`;
+
+                const data = {
+                    Url: `${nodeUrl}`,
+                    BoundaryRegExp: `${boundary}`,
+                    Days: 0,
+                    Hours: 0,
+                    Minutes: 0,
+                    Label: `${nodeUrl}`,
+                    IsActive: false,
+                    Tags: ``
+                };
+
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Execution created successfully!');
+                        } else {
+                            return response.text().then(text => {
+                                console.error('Error creating execution:', text);
+                                alert('Failed to create execution.');
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error creating execution:', error);
+                        alert('Failed to create execution.');
+                    });
+            }
+
+
+            function convertJsonToCytoscapeElements(data, viewMode) {
+                const nodes = [];
+                const nodeUrls = new Set();
+
+                if (viewMode === 'website') {
+                    data.data.nodes.forEach(node => {
+                        const shape = determineNodeShape(node);
+                        nodes.push({
+                            data: {
+                                id: node.url,
+                                label: node.title,
+                                shape: shape,
+                                crawlTime: node.crawlTime,
+                                owner: node.owner
+                            }
+                        });
+                        nodeUrls.add(node.url);
+                    });
+                } else if (viewMode === 'domain') {
+                    const domainMap = new Map();
+
+                    data.data.nodes.forEach(node => {
+                        const domain = getDomainFromUrl(node.url);
+                        if (!domainMap.has(domain)) {
+                            domainMap.set(domain, {
+                                id: domain,
+                                label: domain,
+                                shape: 'ellipse',
+                                nodes: []
+                            });
+                        }
+                        domainMap.get(domain).nodes.push(node);
+                        nodeUrls.add(node.url);
+                    });
+
+                    domainMap.forEach(domainNode => {
+                        nodes.push({
+                            data: {
+                                id: domainNode.id,
+                                label: domainNode.label,
+                                shape: domainNode.shape
+                            }
+                        });
+                    });
+                }
+
+                const edges = data.data.nodes.flatMap(node =>
+                    node.links
+                        .filter(neighbour => nodeUrls.has(neighbour.url))
+                        .map(neighbour => ({
+                            data: {
+                                source: viewMode === 'website' ? node.url : getDomainFromUrl(node.url),
+                                target: viewMode === 'website' ? neighbour.url : getDomainFromUrl(neighbour.url)
+                            }
+                        }))
+                );
+
+                return [...nodes, ...edges];
+            }
+
+            function determineNodeShape(node) {
+                if (node.url === node.owner.url) {
+                    return 'diamond';
+                } else if (node.owner.regexp === getDomainFromUrl(node.url)) {
+                    return 'rectangle';
+                } else {
+                    return 'ellipse';
+                }
+            }
+
+            function getDomainFromUrl(url) {
+                const urlObj = new URL(url);
+                return urlObj.hostname;
+            }
+        });
+    </script>
+</body>
+</html>

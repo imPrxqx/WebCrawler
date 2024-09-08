@@ -110,6 +110,12 @@ namespace WebCrawler.Controllers
             return View();
         }
 
+        // GET: WebsitesCrawler/ShowCrawler
+        public ActionResult ShowCrawler()
+        {
+            return View();
+        }
+
         // GET: WebsitesCrawler/EditCrawler
         public ActionResult EditCrawler(int id)
         {
