@@ -194,5 +194,27 @@ namespace WebCrawler.Controllers
                 return (Content($"Record badly filled: {model.Id}"));
             }
         }
-    }
+
+        [HttpDelete]
+		public IActionResult DeleteCrawler(int id)
+		{
+			try
+			{
+				string sql = @"
+        DELETE FROM public.""WebsiteRecord""
+        WHERE ""Id"" = @Id;
+        ";
+
+				DataAccess.SaveData(sql, new { Id = id }, _connectionString);
+				Console.WriteLine($"Record {id} was deleted successfully");
+				return Ok(); 
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Failed to delete record {id}: {ex.Message}");
+				return StatusCode(500, $"Failed to delete record {id}: {ex.Message}");
+			}
+		}
+
+	}
 }
