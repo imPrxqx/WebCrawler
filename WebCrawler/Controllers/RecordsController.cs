@@ -107,7 +107,6 @@ namespace WebCrawler.Controllers
                                 model.Label,
                                 model.IsActive,
                                 model.Tags,
-                                model.LastChange,
                             },
                             _connectionString
                         );
