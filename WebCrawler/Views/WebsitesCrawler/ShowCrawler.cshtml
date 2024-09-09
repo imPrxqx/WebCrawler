@@ -53,94 +53,147 @@
     <script>
         let isLive = false;
         let intervalId = null;
+        let originalWebPageIds = [];
+
+        const cy = cytoscape({
+            container: document.getElementById('cy'),
+            layout: { name: 'breadthfirst' },
+            style: [
+                {
+                    selector: 'node',
+                    style: {
+                        'background-color': '#666',
+                        'label': 'data(label)',
+                        'shape': 'data(shape)'
+                    }
+                },
+                {
+                    selector: 'edge',
+                    style: {
+                        'width': 2,
+                        'line-color': '#ccc',
+                        'curve-style': 'bezier',
+                        'target-arrow-shape': 'triangle',
+                        'target-arrow-color': '#ccc'
+                    }
+                }
+            ]
+        });
 
         document.addEventListener('DOMContentLoaded', function () {
             const viewModeSelect = document.getElementById('view-mode');
             const dataModeSelect = document.getElementById('data-mode');
+            const webPageIdsInput = document.getElementById('web-page-ids');
             const updateGraphButton = document.getElementById('update-graph');
+            
+            originalWebPageIds = webPageIdsInput.value.split(',').map(id => id.trim()); 
 
             fetchData();
 
-            viewModeSelect.addEventListener('change', fetchData);
+            viewModeSelect.addEventListener('change', changeViewMode);
             dataModeSelect.addEventListener('change', toggleDataMode);
             updateGraphButton.addEventListener('click', fetchData);
 
+            function changeViewMode() {
+                cy.elements().remove();
+                fetchData();
+                
+            }
+
+            function checkWebPageIdsChange() {
+                const currentWebPageIds = webPageIdsInput.value.split(',').map(id => id.trim());
+                const hasIdBeenRemoved = originalWebPageIds.some(id => !currentWebPageIds.includes(id));
+
+                if (hasIdBeenRemoved || originalWebPageIds.length === 0) {
+    
+                    cy.elements().remove();
+
+                } 
+                
+                originalWebPageIds = webPageIdsInput.value.split(',').map(id => id.trim()).filter(id => id.length > 0);
+
+
+            }
+
             function toggleDataMode() {
+
                 const selectedMode = dataModeSelect.value;
                 isLive = selectedMode === 'live';
 
                 if (isLive) {
-                    intervalId = setInterval(fetchData, 60000); // Fetch data every 60 seconds
+                    intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
                 } else {
                     clearInterval(intervalId);
                 }
             }
 
             function fetchData() {
-                const selectedView = viewModeSelect.value;
-                const webPageIds = document.getElementById('web-page-ids').value.split(',').map(id => id.trim()).join(',');
+
+                checkWebPageIdsChange();
+
+                const webPageIds = webPageIdsInput.value.split(',').map(id => id.trim()).join(',');
 
                 fetch(`../../graphql?query=query { nodes(webPages: [${webPageIds}]) { title crawlTime url links { url } owner { active identifier regexp url } } }`)
                     .then(response => response.json())
                     .then(data => {
-                        const elements = convertJsonToCytoscapeElements(data, selectedView);
+                        const newElements = convertJsonToCytoscapeElements(data, viewModeSelect.value);
 
-                        const cy = cytoscape({
-                            container: document.getElementById('cy'),
-                            elements: elements,
-                            layout: { name: 'grid' },
-                            style: [
-                                {
-                                    selector: 'node',
-                                    style: {
-                                        'background-color': '#666',
-                                        'label': 'data(label)',
-                                        'shape': 'data(shape)'
-                                    }
-                                },
-                                {
-                                    selector: 'edge',
-                                    style: {
-                                        'width': 2,
-                                        'line-color': '#ccc',
-                                        'curve-style': 'bezier',
-                                        'target-arrow-shape': 'triangle',
-                                        'target-arrow-color': '#ccc'
-                                    }
+         
+                        cy.nodes().lock();
+
+                        const filteredElements = newElements.filter(element => {
+                            if (element.data.source && element.data.target) {
+                                const source = element.data.source;
+                                const target = element.data.target;
+                                return cy.edges(`[source = "${source}"][target = "${target}"]`).length === 0;
+                            } else if (element.data.id) {
+                                const nodeExists = cy.getElementById(element.data.id).length > 0;
+                                if (!nodeExists) {
+                                    element.position = {
+                                        x: Math.random() * cy.width(),  
+                                        y: Math.random() * cy.height()  
+                                    };
                                 }
-                            ]
+                                return !nodeExists;
+                            }
+                            return false;
                         });
 
-                        cy.on('tap', 'node', function (event) {
-                            const node = event.target;
-                            const nodeInfo = document.getElementById('node-info');
-                            const position = node.renderedPosition();
-                            nodeInfo.innerHTML = `
-                                        URL: ${node.data('id')}<br>
-                                        Title: ${node.data('label')}<br>
-                                        <button id="create-execution">Create Execution</button>
-                                    `;
-                            nodeInfo.style.left = `${position.x + 10}px`;
-                            nodeInfo.style.top = `${position.y + 10}px`;
-                            nodeInfo.style.display = 'block';
+                        cy.add(filteredElements);
 
-                            document.getElementById('create-execution').addEventListener('click', function () {
-                                createExecution(node.data('id'), node.data('owner').regexp);
-                            });
-                        });
+                        cy.nodes().unlock();
+                        
 
                         cy.on('dblclick', 'node', function (event) {
                             const node = event.target;
                             const nodeInfo = document.getElementById('node-info');
                             const position = node.renderedPosition();
-                            nodeInfo.innerHTML = `
-                                        URL: ${node.data('id')}<br>
-                                        Title: ${node.data('label')}<br>
-                                        Crawl Time: ${node.data('crawlTime')}<br>
-                                        Owner URL: ${node.data('owner').url}<br>
-                                        Regexp: ${node.data('owner').regexp}<br>
-                                        <button id="create-execution">Create Execution</button>
-                                    `;
+
+                            let innerHtmlDetail;
+
+
+                            if (viewModeSelect.value === "website") {
+
+                                innerHtmlDetail = `
+                                            URL: ${node.data('id')}<br>
+                                            Title: ${node.data('label')}<br>
+                                            Crawl Time: ${node.data('crawlTime')}<br>
+                                            Owner URL: ${node.data('owner').url}<br>
+                                            Regexp: ${node.data('owner').regexp}<br>
+                                            <button id="create-execution">Create Execution</button>
+                                            `;
+
+                            } else if (viewModeSelect.value === "domain") {
+                                innerHtmlDetail = `
+                                            URL: ${node.data('id')}<br>
+                                            Title: ${node.data('label')}<br>
+                                            Total Crawl Time: ${node.data('crawlTime')}<br>
+                                            List of ID Website Records: [ ${node.data('websiteRecords')} ]<br>
+                                            <button id="create-execution">Create Execution</button>
+                                            `;
+                            }
+
+                            nodeInfo.innerHTML = innerHtmlDetail;
                             nodeInfo.style.left = `${position.x + 10}px`;
                             nodeInfo.style.top = `${position.y + 10}px`;
                             nodeInfo.style.display = 'block';
@@ -164,8 +217,8 @@
                     .catch(error => console.error('Error fetching or processing data:', error));
             }
 
-            // TODO: pouzit REST API pro vytvoreni execution
             function createExecution(nodeUrl, boundary) {
+
                 const apiUrl = `${window.location.origin}/api/Records`;
 
                 const data = {
@@ -186,15 +239,27 @@
                     },
                     body: JSON.stringify(data)
                 })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('Execution created successfully!');
-                        } else {
-                            return response.text().then(text => {
-                                console.error('Error creating execution:', text);
-                                alert('Failed to create execution.');
-                            });
-                        }
+                    .then(response => response.json())
+                    .then(result => {
+
+
+                        alert('Execution created successfully!');
+          
+                        const webPageIdsInput = document.getElementById('web-page-ids');
+                        const currentIds = webPageIdsInput.value.split(',').map(id => id.trim());
+
+                        currentIds.push(result);
+                        webPageIdsInput.value = currentIds.join(',');
+                        
+                        isLive = true;
+                        const dataModeSelect = document.getElementById('data-mode');
+                        const selectedMode = dataModeSelect.value;
+                        isLive = selectedMode === 'live';
+
+                        fetchData();
+                        
+
+                       
                     })
                     .catch(error => {
                         console.error('Error creating execution:', error);
@@ -225,25 +290,32 @@
                     const domainMap = new Map();
 
                     data.data.nodes.forEach(node => {
+                        
                         const domain = getDomainFromUrl(node.url);
+
                         if (!domainMap.has(domain)) {
                             domainMap.set(domain, {
                                 id: domain,
-                                label: domain,
+                                label: node.title,
                                 shape: 'ellipse',
-                                nodes: []
+                                crawlTime: "",
+                                websiteRecords: new Set()
                             });
                         }
-                        domainMap.get(domain).nodes.push(node);
+                        domainMap.get(domain).crawlTime = domainMap.get(domain).crawlTime + " " + node.crawlTime;
+                        domainMap.get(domain).websiteRecords.add(node.owner.identifier);
                         nodeUrls.add(node.url);
                     });
+
 
                     domainMap.forEach(domainNode => {
                         nodes.push({
                             data: {
                                 id: domainNode.id,
                                 label: domainNode.label,
-                                shape: domainNode.shape
+                                shape: domainNode.shape,
+                                crawlTime: domainNode.crawlTime,
+                                websiteRecords: Array.from(domainNode.websiteRecords)
                             }
                         });
                     });
