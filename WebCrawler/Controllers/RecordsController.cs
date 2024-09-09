@@ -82,13 +82,13 @@ namespace WebCrawler.Controllers
                     string insertSql =
                         @"
         INSERT INTO public.""WebsiteRecord"" 
-        (""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange"")
-        VALUES (@Url, @BoundaryRegExp, @Days, @Hours, @Minutes, @Label, @IsActive, @Tags, @LastChange);
+        (""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"")
+        VALUES (@Url, @BoundaryRegExp, @Days, @Hours, @Minutes, @Label, @IsActive, @Tags);
     ";
 
                     string selectSql =
                         @"
-        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange""
+        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags""
         FROM public.""WebsiteRecord"" 
         ORDER BY ""Id"" DESC
         LIMIT 1;
@@ -160,7 +160,6 @@ namespace WebCrawler.Controllers
         ""Label"" = @Label, 
         ""IsActive"" = @IsActive, 
         ""Tags"" = @Tags
-, ""LastChange"" =@LastChange
     WHERE ""Id"" = @Id;
 ";
                     try
