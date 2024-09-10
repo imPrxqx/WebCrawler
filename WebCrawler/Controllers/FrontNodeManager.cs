@@ -7,7 +7,7 @@ namespace WebCrawler.Controllers
 {
     public class FrontNodeManager
     {
-        public IEnumerable<Node?> ManageUrls(Uri rootUrl, string boundary)
+        public IEnumerable<Node?> ManageUrls(Uri rootUrl, string boundary, int WebsiteRecordId)
         {
             GetNodesDataFunction nodeDataFunction = new GetNodesDataFunction();
             Queue<Uri> urlQueue = new Queue<Uri>();
@@ -23,10 +23,10 @@ namespace WebCrawler.Controllers
             {
                 Uri currentUrl = urlQueue.Dequeue();
 
-                Node? currentNode = nodeDataFunction.GetNextNode(currentUrl);
+                Node? currentNode = nodeDataFunction.GetNextNode(currentUrl, WebsiteRecordId);
                 if (currentNode != null)
                 {
-                    yield return currentNode; 
+                    yield return currentNode;
 
                     foreach (Uri nextUrl in currentNode?.nextUrls)
                     {
