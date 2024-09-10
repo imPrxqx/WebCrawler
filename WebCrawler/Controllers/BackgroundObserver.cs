@@ -79,6 +79,7 @@ namespace WebCrawler.Controllers
                             record.LastChange = null;
                             _DataQueue.Add(record);
                             Console.WriteLine($"Queued WebsiteRecord for action: {record.Url}");
+                            updateRecord(record, _connectionString);
                         }
                     }
                 }
@@ -86,6 +87,33 @@ namespace WebCrawler.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"Error checking website records: {ex.Message}");
+            }
+        }
+
+        private void updateRecord(WebsiteRecordModel record, string connectionString)
+        {
+            string updateSql =
+                @"
+        UPDATE public.""WebsiteRecord""
+        SET ""LastChange"" = @LastChange
+        WHERE ""Id"" = @Id;
+    ";
+
+            var parameters = new { LastChange = record.LastChange, Id = record.Id };
+
+            try
+            {
+                DataAccess.SaveData(updateSql, parameters, connectionString);
+                Console.WriteLine(
+                    $"Updated LastChange for WebsiteRecord ID: {record.Id} with {record.LastChange}"
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(
+                    $"Error updating WebsiteRecord ID: {record.Id}, Error: {ex.Message}"
+                );
+                throw;
             }
         }
 
@@ -120,7 +148,6 @@ namespace WebCrawler.Controllers
                             record.LastChange = DateTime.Now;
                         }
                     }
-                    
                 }
                 else
                 {
