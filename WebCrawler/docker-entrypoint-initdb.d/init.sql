@@ -2,6 +2,7 @@ CREATE TABLE "WebsiteRecord" (
     "Id" SERIAL PRIMARY KEY,
     "Url" VARCHAR(255) NOT NULL,
     "BoundaryRegExp" VARCHAR(255) NOT NULL,
+    "LastChange" TIMESTAMP,
     "Days" INT NOT NULL,
     "Hours" INT NOT NULL,
     "Minutes" INT NOT NULL,
