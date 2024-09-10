@@ -132,7 +132,7 @@ namespace WebCrawler.Controllers
         {
             string deleteNodeNeighboursSql =
                 @"
-        DELETE FROM public.""NodeNeighbours""
+        DELETE FROM public.""NodeNeighbour""
         WHERE ""NodeId"" IN (SELECT ""Id"" FROM public.""Node"" WHERE ""WebsiteRecordId"" = @Id)
         OR ""NeighbourNodeId"" IN (SELECT ""Id"" FROM public.""Node"" WHERE ""WebsiteRecordId"" = @Id);
     ";
@@ -146,7 +146,7 @@ namespace WebCrawler.Controllers
             try
             {
                 DataAccess.SaveData(deleteNodeNeighboursSql, new { Id = id }, connectionString);
-                Console.WriteLine($"Deleted NodeNeighbours for WebsiteRecord ID: {id}");
+                Console.WriteLine($"Deleted NodeNeighbour for WebsiteRecord ID: {id}");
 
                 DataAccess.SaveData(deleteNodesSql, new { Id = id }, connectionString);
                 Console.WriteLine($"Deleted Nodes for WebsiteRecord ID: {id}");
@@ -216,7 +216,7 @@ namespace WebCrawler.Controllers
 
             string sql =
                 @"
-        INSERT INTO public.""NodeNeighbours"" (""NodeId"", ""NeighbourNodeId"")
+        INSERT INTO public.""NodeNeighbour"" (""NodeId"", ""NeighbourNodeId"")
         VALUES (@NodeId, @NeighbourNodeId)
         ON CONFLICT DO NOTHING;
     ";
