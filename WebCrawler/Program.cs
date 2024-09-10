@@ -1,6 +1,6 @@
-using WebCrawler.Models;
 using Microsoft.EntityFrameworkCore;
 using WebCrawler.GraphQl;
+using WebCrawler.Models;
 
 namespace WebCrawler
 {
@@ -12,9 +12,19 @@ namespace WebCrawler
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-			builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddGraphQLServer().AddQueryType<Query>().AddType<WebCrawler.GraphQl.WebPage>().AddType<WebCrawler.GraphQl.Node>().RegisterService<ApplicationDbContext>();
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+            );
+            builder
+                .Services.AddGraphQLServer()
+                .AddQueryType<Query>()
+                .AddType<WebCrawler.GraphQl.WebPage>()
+                .AddType<WebCrawler.GraphQl.Node>()
+                .RegisterService<ApplicationDbContext>();
+		
+            builder.Services.AddSingleton<RecordsQueue>();
 
+            builder.Services.AddHostedService<BackgroundObserver>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,8 +44,9 @@ namespace WebCrawler
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-            
+                pattern: "{controller=Home}/{action=Index}/{id?}"
+            );
+
             app.MapGraphQL();
 
             app.Run();
