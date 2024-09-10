@@ -174,33 +174,60 @@
 
                             if (viewModeSelect.value === "website") {
 
-                                innerHtmlDetail = `
-                                            URL: ${node.data('id')}<br>
-                                            Title: ${node.data('label')}<br>
-                                            Crawl Time: ${node.data('crawlTime')}<br>
-                                            Owner URL: ${node.data('owner').url}<br>
-                                            Regexp: ${node.data('owner').regexp}<br>
-                                            <button id="create-execution">Create Execution</button>
-                                            `;
+                                if (node.data('crawled') === true) {
+                                    innerHtmlDetail = `
+                                                    URL: ${node.data('id')}<br>
+                                                    Crawl Time: ${node.data('crawlTime')}<br>
+                                                    ID Website Record: ${node.data('owner').identifier}<br>
+                                                    <button id="create-execution">Create new execution</button>
+                                                    `;
+                                } else {
+                                    innerHtmlDetail = `
+                                                    URL: ${node.data('id')}<br>
+                                                    <button id="create-execution">Create new Crawler and new execution</button>
+                                                    `;
+                                }
 
                             } else if (viewModeSelect.value === "domain") {
-                                innerHtmlDetail = `
-                                            URL: ${node.data('id')}<br>
-                                            Title: ${node.data('label')}<br>
-                                            Total Crawl Time: ${node.data('crawlTime')}<br>
-                                            List of ID Website Records: [ ${node.data('websiteRecords')} ]<br>
-                                            <button id="create-execution">Create Execution</button>
-                                            `;
+                                if (node.data('crawled') === true) {
+                                    innerHtmlDetail = `
+                                                    URL: ${node.data('id')}<br>
+                                                    Total Crawl Time: ${node.data('crawlTime')}<br>
+                                                    List of ID Website Records: [ ${node.data('websiteRecords')} ]<br>
+                                                    <input type="text" id="single-number" pattern="\d" title="Selected Website ID" required>
+                                                    <button id="create-execution">Create new execution</button>
+                                                    `;
+                                } else {
+                                    innerHtmlDetail = `
+                                                    URL: ${node.data('id')}<br>
+                                                    <button id="create-execution">Create new Crawler and new execution</button>
+                                                    `;
+                                }      
                             }
 
                             nodeInfo.innerHTML = innerHtmlDetail;
+
+                            if (viewModeSelect.value === "website") {
+
+                                document.getElementById('create-execution').addEventListener('click', function () {
+                                    createExecution(node.data('id'), node.data('owner').regexp, node.data('crawled'), node.data('owner').identifier);
+                                });
+
+                            } else if (viewModeSelect.value === "domain") {
+
+                                document.getElementById('create-execution').addEventListener('click', function () {
+
+                                    const selectedID = document.getElementById('single-number').value;
+                                    console.log(selectedID);
+                                    createExecution(node.data('id'), node.data('websiteRecords'), node.data('crawled'), selectedID);
+                                });
+                            }
+
                             nodeInfo.style.left = `${position.x + 10}px`;
                             nodeInfo.style.top = `${position.y + 10}px`;
                             nodeInfo.style.display = 'block';
 
-                            document.getElementById('create-execution').addEventListener('click', function () {
-                                createExecution(node.data('id'), node.data('owner').regexp);
-                            });
+                            
                         });
 
                         cy.on('pan', function () {
@@ -217,54 +244,77 @@
                     .catch(error => console.error('Error fetching or processing data:', error));
             }
 
-            function createExecution(nodeUrl, boundary) {
+            function createExecution(nodeUrl, boundary, isCrawled, websiteId) {
 
                 const apiUrl = `${window.location.origin}/api/Records`;
+                console.log(isCrawled);
 
-                const data = {
-                    Url: `${nodeUrl}`,
-                    BoundaryRegExp: `${boundary}`,
-                    Days: 0,
-                    Hours: 0,
-                    Minutes: 0,
-                    Label: `${nodeUrl}`,
-                    IsActive: false,
-                    Tags: ``
-                };
+                if (isCrawled === false) {
+                    const data = {
+                        Url: `${nodeUrl}`,
+                        BoundaryRegExp: `${boundary}`,
+                        Days: 0,
+                        Hours: 0,
+                        Minutes: 0,
+                        Label: `${nodeUrl}`,
+                        IsActive: false,
+                        Tags: ``
+                    };
 
-                fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                })
-                    .then(response => response.json())
-                    .then(result => {
-
-
-                        alert('Execution created successfully!');
-          
-                        const webPageIdsInput = document.getElementById('web-page-ids');
-                        const currentIds = webPageIdsInput.value.split(',').map(id => id.trim());
-
-                        currentIds.push(result);
-                        webPageIdsInput.value = currentIds.join(',');
-                        
-                        isLive = true;
-                        const dataModeSelect = document.getElementById('data-mode');
-                        const selectedMode = dataModeSelect.value;
-                        isLive = selectedMode === 'live';
-
-                        fetchData();
-                        
-
-                       
+                    fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
                     })
-                    .catch(error => {
-                        console.error('Error creating execution:', error);
-                        alert('Failed to create execution.');
-                    });
+                        .then(response => response.json())
+                        .then(result => {
+
+
+                            alert('Execution created successfully!');
+
+                            const webPageIdsInput = document.getElementById('web-page-ids');
+                            const currentIds = webPageIdsInput.value.split(',').map(id => id.trim());
+
+                            currentIds.push(result);
+                            webPageIdsInput.value = currentIds.join(',');
+
+                            isLive = true;
+                            const dataModeSelect = document.getElementById('data-mode');
+                            const selectedMode = dataModeSelect.value;
+                            isLive = selectedMode === 'live';
+
+                            fetchData();
+
+
+
+                        })
+                        .catch(error => {
+                            console.error('Error creating execution:', error);
+                            alert('Failed to create execution.');
+                        });
+                } else {
+
+
+                    if (viewModeSelect.value === "website") {
+                        console.log(`Èíslo v poli.`);
+
+
+                    } else if (viewModeSelect.value === "domain") {
+
+                        if (boundary.includes(websiteId)) {
+                            console.log(`Èíslo ${websiteId} je v poli.`);
+                        } else {
+                            console.log(`Èíslo ${websiteId} není v poli.`);
+                        }
+                    }
+
+
+    
+                }
+
+                
             }
 
 
@@ -275,13 +325,23 @@
                 if (viewMode === 'website') {
                     data.data.nodes.forEach(node => {
                         const shape = determineNodeShape(node);
+                        
+                        let isCrawled;
+
+                        if (node.crawlTime === null) {
+                            isCrawled = false;
+                        } else {
+                            isCrawled = true;
+                        }
+
                         nodes.push({
                             data: {
                                 id: node.url,
                                 label: node.title,
                                 shape: shape,
                                 crawlTime: node.crawlTime,
-                                owner: node.owner
+                                owner: node.owner,
+                                crawled: isCrawled
                             }
                         });
                         nodeUrls.add(node.url);
@@ -292,16 +352,26 @@
                     data.data.nodes.forEach(node => {
                         
                         const domain = getDomainFromUrl(node.url);
-
+                     
                         if (!domainMap.has(domain)) {
                             domainMap.set(domain, {
                                 id: domain,
                                 label: node.title,
                                 shape: 'ellipse',
                                 crawlTime: "",
-                                websiteRecords: new Set()
+                                websiteRecords: new Set(),
+                                crawled: false
                             });
                         }
+
+
+                        let isCrawled = false;
+
+                        if (node.crawlTime !== null) {
+                            domainMap.get(domain).crawled = true;
+                        } 
+
+
                         domainMap.get(domain).crawlTime = domainMap.get(domain).crawlTime + " " + node.crawlTime;
                         domainMap.get(domain).websiteRecords.add(node.owner.identifier);
                         nodeUrls.add(node.url);
@@ -315,7 +385,8 @@
                                 label: domainNode.label,
                                 shape: domainNode.shape,
                                 crawlTime: domainNode.crawlTime,
-                                websiteRecords: Array.from(domainNode.websiteRecords)
+                                websiteRecords: Array.from(domainNode.websiteRecords),
+                                crawled: domainNode.crawled
                             }
                         });
                     });
