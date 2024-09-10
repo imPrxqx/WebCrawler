@@ -1,15 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebCrawler.Models
 {
-
     [Table("WebsiteRecord")]
     public class WebsiteRecordModel
     {
         public int Id { get; set; }
         public string Url { get; set; }
         public string BoundaryRegExp { get; set; }
+        public DateTime? LastChange { get; set; }
         public int Days { get; set; }
         public int Hours { get; set; }
         public int Minutes { get; set; }
@@ -25,9 +25,8 @@ namespace WebCrawler.Models
         public string Title { get; set; }
         public string CrawlTime { get; set; }
         public string UrlMain { get; set; }
-        public int WebsiteRecordId { get; set; } 
+        public int WebsiteRecordId { get; set; }
     }
-
 
     [Table("NodeNeighbour")]
     public class NodeNeighbourModel
@@ -35,5 +34,4 @@ namespace WebCrawler.Models
         public int NodeId { get; set; }
         public int NeighbourNodeId { get; set; }
     }
-
 }
