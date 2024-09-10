@@ -207,7 +207,7 @@ public async Task<IActionResult> SaveCrawler(WebsiteRecordModel model)
             {
                 string deleteNodeNeighboursSql =
                     @"
-                    DELETE FROM public.""NodeNeighbours""
+                    DELETE FROM public.""NodeNeighbour""
                     WHERE ""NodeId"" IN (SELECT ""Id"" FROM public.""Node"" WHERE ""WebsiteRecordId"" = @Id)
                     OR ""NeighbourNodeId"" IN (SELECT ""Id"" FROM public.""Node"" WHERE ""WebsiteRecordId"" = @Id);
                 ";
