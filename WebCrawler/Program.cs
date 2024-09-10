@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebCrawler.GraphQl;
 using WebCrawler.Models;
-
+using WebCrawler.Controllers;
 namespace WebCrawler
 {
     public class Program
