@@ -61,48 +61,48 @@ namespace WebCrawler.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveCrawler(WebsiteRecordModel model)
+public async Task<IActionResult> SaveCrawler(WebsiteRecordModel model)
+{
+    if (DataVerifier.WebsiteRecordVerifier(model))
+    {
+        try
         {
-            if (DataVerifier.WebsiteRecordVerifier(model))
+            string sql;
+            if (DataVerifier.DoesWebsiteRecordExist(model.Id, _connectionString))
             {
-                try
-                {
-                    string sql;
-                    if (DataVerifier.DoesWebsiteRecordExist(model.Id, _connectionString))
-                    {
-                        sql =
-                            @"
-                    UPDATE public.""WebsiteRecord"" 
-                    SET ""Url"" = @Url, ""BoundaryRegExp"" = @BoundaryRegExp, ""Days"" = @Days, 
-                        ""Hours"" = @Hours, ""Minutes"" = @Minutes, ""Label"" = @Label, 
-                        ""IsActive"" = @IsActive, ""Tags"" = @Tags
-                    WHERE ""Id"" = @Id;
-                ";
+				sql =
+			@"
+        UPDATE public.""WebsiteRecord"" 
+        SET ""Url"" = @Url, ""BoundaryRegExp"" = @BoundaryRegExp, ""Days"" = @Days, 
+            ""Hours"" = @Hours, ""Minutes"" = @Minutes, ""Label"" = @Label, 
+            ""IsActive"" = @IsActive, ""Tags"" = @Tags, ""LastChange"" = @LastChange
+        WHERE ""Id"" = @Id;
+    ";
 
-                        DataAccess.SaveData(sql, model, _connectionString);
-                    }
-                    else
-                    {
-                        sql =
-                            @"
-                    INSERT INTO public.""WebsiteRecord"" 
-                    (""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"") 
-                    VALUES 
-                    (@Url, @BoundaryRegExp, @Days, @Hours, @Minutes, @Label, @IsActive, @Tags)
-                    RETURNING ""Id"";
-                ";
-
-                        DataAccess.SaveData(sql, model, _connectionString);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return Content($"Error connecting to database: {ex.Message}");
-                }
+				DataAccess.SaveData(sql, model, _connectionString);
             }
+            else
+            {
+				sql =
+			@"
+        INSERT INTO public.""WebsiteRecord"" 
+        (""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange"") 
+        VALUES 
+        (@Url, @BoundaryRegExp, @Days, @Hours, @Minutes, @Label, @IsActive, @Tags, @LastChange)
+        RETURNING ""Id"";
+    ";
 
-            return Content($"Record added successfully: {model.Id}");
+				DataAccess.SaveData(sql, model, _connectionString);
+            }
         }
+        catch (Exception ex)
+        {
+            return Content($"Error connecting to database: {ex.Message}");
+        }
+    }
+
+    return Content($"Record added successfully: {model.Id}");
+}
 
         // GET: WebsitesCrawler/CreateCrawler
         public ActionResult CreateCrawler()
