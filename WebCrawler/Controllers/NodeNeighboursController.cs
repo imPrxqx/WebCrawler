@@ -39,7 +39,7 @@ namespace WebCrawler.Controllers
     ""NodeId"",
     ""NeighbourNodeId""
 FROM 
-    ""public"".""NodeNeighbours""";
+    ""public"".""NodeNeighbour""";
 
             var nodes = DataAccess.LoadData<NodeNeighbourModel, dynamic>(
                 sql,
@@ -60,7 +60,7 @@ FROM
             ""NodeId"",
             ""NeighbourNodeId""
         FROM 
-            ""NodeNeighbours""
+            ""NodeNeighbour""
         WHERE 
             ""NodeId"" = @Id
     ";
@@ -93,7 +93,7 @@ FROM
                 {
                     string sql =
                         @"
-                INSERT INTO ""NodeNeighbours"" (""NodeId"", ""NeighbourNodeId"")
+                INSERT INTO ""NodeNeighbour"" (""NodeId"", ""NeighbourNodeId"")
                 VALUES (@NodeId, @NeighbourNodeId);
             ";
                     try
@@ -133,7 +133,7 @@ FROM
                 {
                     string sql =
                         @"
-            UPDATE ""NodeNeighbours""
+            UPDATE ""NodeNeighbour""
             SET ""NeighbourNodeId"" = @NeighbourNodeId
             WHERE ""NodeId"" = @NodeId;
         ";
@@ -165,7 +165,7 @@ FROM
         {
             string sql =
                 @"
-        DELETE FROM ""NodeNeighbours""
+        DELETE FROM ""NodeNeighbour""
         WHERE ""NodeId"" = @Id OR ""NeighbourNodeId"" = @Id;
     ";
 
