@@ -53,7 +53,13 @@ namespace WebCrawler.Controllers
             {
                 model.Tags = "";
             }
-
+            if (model.LastChange == null)
+            {
+                model.LastChange = DateTime
+                    .Now.AddMinutes(-model.Minutes)
+                    .AddHours(-model.Hours)
+                    .AddDays(-model.Days);
+            }
             return true;
         }
 
@@ -66,6 +72,28 @@ namespace WebCrawler.Controllers
                 connectionString
             );
             return result.Any();
+        }
+
+        public static int? GetNodeIdInWebsiteRecord(
+            string url,
+            int websiteRecordId,
+            string connectionString
+        )
+        {
+            string sql =
+                @"
+    SELECT ""Id""
+    FROM public.""Node""
+    WHERE ""UrlMain"" = @Url AND ""WebsiteRecordId"" = @WebsiteRecordId;
+    ";
+
+            var result = DataAccess.LoadData<int?, dynamic>(
+                sql,
+                new { Url = url, WebsiteRecordId = websiteRecordId },
+                connectionString
+            );
+
+            return result.FirstOrDefault();
         }
 
         public static bool AreNodesFromSameWebsiteRecord(
