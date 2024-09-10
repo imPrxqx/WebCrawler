@@ -35,7 +35,7 @@ namespace WebCrawler.Controllers
         {
             string sql =
                 @"
-        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags""
+        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"",  ""LastChange""
         FROM public.""WebsiteRecord"";
     ";
 
@@ -54,7 +54,7 @@ namespace WebCrawler.Controllers
         {
             string sql =
                 @"
-        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags""
+        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"",  ""LastChange""
         FROM public.""WebsiteRecord""
         WHERE ""Id"" = @Id;
     ";
@@ -82,13 +82,13 @@ namespace WebCrawler.Controllers
                     string insertSql =
                         @"
         INSERT INTO public.""WebsiteRecord"" 
-        (""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"")
-        VALUES (@Url, @BoundaryRegExp, @Days, @Hours, @Minutes, @Label, @IsActive, @Tags);
+        (""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange"")
+        VALUES (@Url, @BoundaryRegExp, @Days, @Hours, @Minutes, @Label, @IsActive, @Tags, @LastChange);
     ";
 
                     string selectSql =
                         @"
-        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags""
+        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange""
         FROM public.""WebsiteRecord"" 
         ORDER BY ""Id"" DESC
         LIMIT 1;
@@ -107,6 +107,7 @@ namespace WebCrawler.Controllers
                                 model.Label,
                                 model.IsActive,
                                 model.Tags,
+                                model.LastChange,
                             },
                             _connectionString
                         );
@@ -160,6 +161,7 @@ namespace WebCrawler.Controllers
         ""Label"" = @Label, 
         ""IsActive"" = @IsActive, 
         ""Tags"" = @Tags
+, ""LastChange"" =@LastChange
     WHERE ""Id"" = @Id;
 ";
                     try
