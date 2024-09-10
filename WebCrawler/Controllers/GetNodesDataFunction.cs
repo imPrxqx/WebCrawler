@@ -1,9 +1,9 @@
-﻿using HtmlAgilityPack;
+using HtmlAgilityPack;
 using WebCrawler.Models;
 
 public class GetNodesDataFunction
 {
-    public Node? GetNextNode(Uri url)
+    public Node? GetNextNode(Uri url, int WebsiteRecordId)
     {
         List<Uri> links;
 
@@ -26,7 +26,7 @@ public class GetNodesDataFunction
             return null;
         }
 
-        return new Node(url, links);
+        return new Node(WebsiteRecordId, url, links);
     }
 
     private List<Uri> GetAllLinks(HtmlDocument htmlDocument, Uri baseUrl)
