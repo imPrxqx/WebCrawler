@@ -115,11 +115,12 @@ namespace WebCrawler.Controllers
                     )
                     {
                         NodeSniffer(node);
+                        if (record.IsActive)
+                        {
+                            record.LastChange = DateTime.Now;
+                        }
                     }
-                    if (record.IsActive)
-                    {
-                        record.LastChange = DateTime.Now;
-                    }
+                    
                 }
                 else
                 {
