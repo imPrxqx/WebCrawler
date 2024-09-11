@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -19,12 +20,13 @@ namespace WebCrawler.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Url = table.Column<string>(type: "text", nullable: false),
                     BoundaryRegExp = table.Column<string>(type: "text", nullable: false),
+                    LastChange = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Days = table.Column<int>(type: "integer", nullable: false),
                     Hours = table.Column<int>(type: "integer", nullable: false),
                     Minutes = table.Column<int>(type: "integer", nullable: false),
                     Label = table.Column<string>(type: "text", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    Tags = table.Column<string>(type: "text", nullable: false)
+                    Tags = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

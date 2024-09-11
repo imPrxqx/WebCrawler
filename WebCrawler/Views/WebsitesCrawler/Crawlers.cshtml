@@ -1,84 +1,218 @@
 @model List<WebCrawler.Models.WebsiteRecordModel>
 @{
-    ViewData["Title"] = "Article List";
+	ViewData["Title"] = "Crawler List";
 }
 
 
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Article List</title>
-	</head>
-	<body>
-		<div id="container">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Crawler List</title>
 
-		<div class="topnav">
-			<input type="text" id="searchBarInput" onkeyup="searchFunction()" placeholder="Search for labels..">
-		</div>
+	<style>
 
-			<div>
-				<hr>
-			</div>
+
+		#crawler-list {
+			height: 500px;
+		}
+
+
+		.table-like {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		.table-like .header {
+			font-weight: bold;
+			background-color: #f4f4f4;
+		}
+
+		.cell {
+			height: 40px;
+		}
+
+		.cell, .operation {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.operation a {
+			margin-left: 10px;
+			margin-right: 10px;
+		}
+
+		.table-like li {
+			display: flex;
+		}
+
+		.table-like .cell {
+			flex: 1;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#pagination {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+
+		button {
+			width: 100px;
+			height: 50px;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#count-page {
+			margin-left: 50px;
+			margin-right: 50px;
+		}
+
+		#search-bar-input {
+			width: 100%;
+		}
+
+	</style>
+</head>
+<body>
+	<div>
 
 		<div>
-			<ul id="crawler-list">
-				@foreach (var article in Model)
-				{
-					<li class="article" id="@article.Id">
-						<div>
-							<p>@article.Id</p>
-							<p>@article.Url</p>
+			<input type="text" id="search-bar-input" onkeyup="searchFunction()" placeholder="Search for labels, urls, tags..">
+		</div>
+		<div>
+			<hr>
+		</div>
+		<div>
+			<label>Sort by:</label>
+			<select id="sort-order" onchange="searchFunction()">
+				<option value="None">None</option>
+				<option value="Url">URL</option>
+				<option value="LastExecutionTime">Last Execution Time</option>
+			</select>
+		</div>
+		<div>
+			<hr>
+		</div>
 
+		<div>
+
+			<ul class="table-like" id="crawler-list">
+				<li class="header">
+					<div class="cell">
+						Label
+					</div>
+					<div class="cell">
+						Url
+					</div>
+					<div class="cell">
+						Last Change
+					</div>
+					<div class="cell">
+						Periodicity
+					</div>
+					<div class="cell">
+						Status
+					</div>
+					<div class="cell">
+						Tags
+					</div>
+					<div class="cell">
+						Operation
+					</div>
+				</li>
+
+				@foreach (var crawler in Model)
+				{
+					var period = "";
+					if (crawler.Days > 0) period += $"{crawler.Days}d ";
+					if (crawler.Hours > 0) period += $"{crawler.Hours}h ";
+					if (crawler.Minutes > 0) period += $"{crawler.Minutes}m";
+
+					<li class="crawler" id="@crawler.Id">
+
+						<div class="cell">
+							<span>@crawler.Label</span>
 						</div>
 
-						<div>
+						<div class="cell">
+							<span>@crawler.Url</span>
+						</div>
+
+						<div class="cell">
+							<span>@crawler.LastChange</span>
+						</div>
+
+						<div class="cell">
+
+							<span>@period</span>
+						</div>
+
+						<div class="cell">
+							<span>@crawler.IsActive</span>
+						</div>
+
+
+						<div class="cell">
 							@{
 								TagsData tagsData = new TagsData();
-								tagsData.AddTags(article.Tags); 
+								tagsData.AddTags(crawler.Tags);
 								var tags = tagsData.GetAllTags();
-
 								foreach (var tag in tags)
 								{
-										<span class="tag">@Html.Raw(tag.Key)</span>
+									<span class="tag">@Html.Raw(tag.Key)</span>
 								}
 							}
 						</div>
 
-						<div>
-							<a href="@Url.Action("Show", "Article", new { id = article.Id })">Show</a>
-							<a href="@Url.Action("CreateEditCrawler", "WebsitesCrawler", new { id = article.Id })">Edit</a>
-							<a href="" onclick="deleteRecord(@article.Id)">Delete</a>
+						<div class="cell operation">
+							<a href="@Url.Action("ShowCrawler", "WebsitesCrawler", new { id = crawler.Id })">Show</a>
+
+							<a href="@Url.Action("CreateEditCrawler", "WebsitesCrawler", new { id = crawler.Id })">Edit</a>
+
+							<a href="" onclick="deleteRecord(@crawler.Id)">Delete</a>
 						</div>
 					</li>
 				}
 			</ul>
 		</div>
 
-			
-			<div>
-				<hr>
-			</div>
-			<div id="pagination">
-				<div id="page-left">
-					<div>
+
+		<div>
+			<hr>
+		</div>
+		<div id="pagination">
+			<div id="page-left">
+				<div>
 					<button id="prev-page" onclick="prevPage()">Previous</button>
-					</div>
-					<div>
-					<button id="next-page" onclick="nextPage()">Next</button>
-					</div>
 				</div>
-				<div id="page-right">
-					<span id="count-page"></span>
+
+			</div>
+			<div id="page-center">
+				<span id="count-page"></span>
+			</div>
+			<div id="page-right">
+				<div>
+					<button id="next-page" onclick="nextPage()">Next</button>
 				</div>
 			</div>
-				
+
 		</div>
 
-		<script>
+	</div>
 
+	<script>
+
+		let order = "None";
 		let start = 0;
 		let end = 9;
 		const inc = end + 1;
@@ -101,30 +235,30 @@
 		}
 
 		function filterAndShow() {
-			let input = document.getElementById('searchBarInput').value.toUpperCase();
+			let input = document.getElementById('search-bar-input').value.toUpperCase();
 			let pieces = input.split(' ');
 			pieces = pieces.map(piece => piece.trim());
 
 
-			let articles = document.querySelectorAll(".article");
-			let numOfArticles = articles.length;
-			let filteredArticles = [];
+			let crawlers = document.querySelectorAll(".crawler");
+			let numOfCrawlers = crawlers.length;
+			let filteredCrawlers = [];
 			let currentPage = Math.floor(start / (end - start + 1)) + 1;
 
 
-			for (let i = 0; i < numOfArticles; i++) {
-				articles[i].style.display = "none";
+			for (let i = 0; i < numOfCrawlers; i++) {
+				crawlers[i].style.display = "none";
 
 				let allPiecesMatch = true;
-				
-				let articleText = articles[i].getElementsByTagName("p")[0]?.textContent || articles[i].getElementsByTagName("p")[0]?.innerText || "";
-				let articleUrl = articles[i].getElementsByTagName("p")[1]?.textContent || articles[i].getElementsByTagName("p")[1]?.innerText || "";
-				let tagElements = articles[i].querySelectorAll(".tag");
+
+				let crawlerLabel = crawlers[i].getElementsByTagName("span")[0]?.textContent || crawlers[i].getElementsByTagName("p")[0]?.innerText || "";
+				let crawlerUrl = crawlers[i].getElementsByTagName("span")[1]?.textContent || crawlers[i].getElementsByTagName("p")[1]?.innerText || "";
+				let tagElements = crawlers[i].querySelectorAll(".tag");
 
 				pieces.forEach(piece => {
-					let pieceInText = articleText.toUpperCase().indexOf(piece.toUpperCase()) > -1;
+					let pieceInText = crawlerLabel.toUpperCase().indexOf(piece.toUpperCase()) > -1;
 
-					let pieceInUrl = articleUrl.toUpperCase().indexOf(piece.toUpperCase()) > -1;
+					let pieceInUrl = crawlerUrl.toUpperCase().indexOf(piece.toUpperCase()) > -1;
 
 
 					let pieceInTags = Array.from(tagElements).some(tagElement => {
@@ -138,22 +272,36 @@
 					}
 				});
 
-
-
-				
 				if (allPiecesMatch === true) {
-					filteredArticles.push(articles[i]);
-				} 
+					filteredCrawlers.push(crawlers[i]);
+				}
+			}
+
+			const order = document.getElementById('sort-order').value;
+
+
+			if (order === "Url") {
+				filteredCrawlers.sort((a, b) => {
+					let urlA = a.getElementsByTagName("span")[1]?.textContent || "";
+					let urlB = b.getElementsByTagName("span")[1]?.textContent || "";
+					return urlA.localeCompare(urlB);
+				});
+			} else if (order === "LastExecutionTime") {
+				filteredCrawlers.sort((a, b) => {
+					let timeA = a.getElementsByTagName("span")[2]?.textContent || "";
+					let timeB = b.getElementsByTagName("span")[2]?.textContent || "";
+					return timeA - timeB;
+				});
 			}
 
 
-			let filteredNumOfArticles = filteredArticles.length;
+			let filteredNumOfCrawlers = filteredCrawlers.length;
 
-			for (let i = 0; i < filteredNumOfArticles; i++) {
+			for (let i = 0; i < filteredNumOfCrawlers; i++) {
 				if (i >= start && i <= end) {
-					filteredArticles[i].style.display = "block";
+					filteredCrawlers[i].style.display = "flex";
 				} else {
-					filteredArticles[i].style.display = "none";
+					filteredCrawlers[i].style.display = "none";
 				}
 			}
 
@@ -163,7 +311,7 @@
 				document.getElementById("prev-page").style.visibility = "hidden";
 			}
 
-			if (end < (filteredNumOfArticles - 1)) {
+			if (end < (filteredNumOfCrawlers - 1)) {
 				document.getElementById("next-page").style.visibility = "visible";
 			} else {
 				document.getElementById("next-page").style.visibility = "hidden";
@@ -189,20 +337,20 @@
 			})
 				.then(response => {
 					if (!response.ok) {
-						throw new Error("Couldn't remove article");
+						throw new Error("Couldn't remove crawler");
 					}
 
-					let article = document.querySelector(`.article-${id}`) || document.getElementById(id);
-					if (article) {
-						article.parentNode.removeChild(article);
-						if (start >= document.querySelectorAll(".article").length && (end - inc) > 0) {
+					let crawler = document.querySelector(`.crawler-${id}`) || document.getElementById(id);
+					if (crawler) {
+						crawler.parentNode.removeChild(crawler);
+						if (start >= document.querySelectorAll(".crawler").length && (end - inc) > 0) {
 							start -= inc;
 							end -= inc;
 						}
-						filterAndShow(); 
-						getPageNum(); 
+						filterAndShow();
+						getPageNum();
 					} else {
-						throw new Error("Article doesn't exist");
+						throw new Error("Crawler doesn't exist");
 					}
 				})
 				.catch(error => {
@@ -210,6 +358,6 @@
 				});
 		}
 
-		</script>
-	</body>
+	</script>
+</body>
 </html>

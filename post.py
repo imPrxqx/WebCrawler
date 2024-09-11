@@ -2,8 +2,8 @@ import requests
 import random
 import string
 
-urlRecords = 'https://localhost:32770/api/Records'
-urlNodes = 'https://localhost:32770/api/Nodes'
+urlRecords = 'https://localhost:32771/api/Records'
+urlNodes = 'https://localhost:32771/api/Nodes'
 
 def random_string(length=10):
     letters = string.ascii_lowercase

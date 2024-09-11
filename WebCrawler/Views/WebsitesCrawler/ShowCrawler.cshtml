@@ -1,3 +1,7 @@
+@{
+    var model = (dynamic)ViewData.Model;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crawler Graph</title>
     <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.22.0/dist/cytoscape.min.js"></script>
+
     <style>
         #cy {
             width: 100%;
@@ -44,7 +49,15 @@
         </label>
         <label>
             Web Page IDs (comma separated):
-            <input type="text" id="web-page-ids" value="1,2,3,4">
+            @if (ViewData.Model != null)
+            {
+                <input type="text" id="web-page-ids" value="@ViewData.Model">
+            }
+            else
+            {
+                <input type="text" id="web-page-ids" value="1,2,3,4">
+            }
+
         </label>
         <button id="update-graph">Update Graph</button>
     </div>
@@ -421,6 +434,9 @@
                 return urlObj.hostname;
             }
         });
+    </script>
+    <script>
+        history.replaceState(null, '', '/WebsitesCrawler/ShowCrawler');
     </script>
 </body>
 </html>
