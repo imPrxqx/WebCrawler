@@ -92,27 +92,26 @@ namespace WebCrawler.Controllers
 
         private void updateRecord(WebsiteRecordModel record, string connectionString)
         {
-            string updateSql =
-                @"
+            string updateSql = @"
         UPDATE public.""WebsiteRecord""
         SET ""LastChange"" = @LastChange
         WHERE ""Id"" = @Id;
     ";
 
-            var parameters = new { LastChange = record.LastChange, Id = record.Id };
+            var parameters = new
+            {
+                LastChange = record.LastChange,
+                Id = record.Id
+            };
 
             try
             {
                 DataAccess.SaveData(updateSql, parameters, connectionString);
-                Console.WriteLine(
-                    $"Updated LastChange for WebsiteRecord ID: {record.Id} with {record.LastChange}"
-                );
+                Console.WriteLine($"Updated LastChange for WebsiteRecord ID: {record.Id} with {record.LastChange}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(
-                    $"Error updating WebsiteRecord ID: {record.Id}, Error: {ex.Message}"
-                );
+                Console.WriteLine($"Error updating WebsiteRecord ID: {record.Id}, Error: {ex.Message}");
                 throw;
             }
         }
@@ -146,9 +145,9 @@ namespace WebCrawler.Controllers
                         if (record.IsActive)
                         {
                             record.LastChange = DateTime.Now;
-                            updateRecord(record, _connectionString);
                         }
                     }
+                    
                 }
                 else
                 {
@@ -197,7 +196,7 @@ namespace WebCrawler.Controllers
                 foreach (var nextUrl in node.Value.nextUrls)
                 {
                     int? nodeId = DataVerifier.GetNodeIdInWebsiteRecord(
-                        nextUrl.AbsolutePath,
+                        nextUrl.OriginalString,
                         node.Value.WebsiteRecordId,
                         _connectionString
                     );
@@ -208,7 +207,7 @@ namespace WebCrawler.Controllers
                     else
                     {
                         int newNodeId = AddNode(
-                            nextUrl.AbsolutePath,
+                            nextUrl.OriginalString,
                             node.Value.WebsiteRecordId,
                             _connectionString
                         );
@@ -216,14 +215,14 @@ namespace WebCrawler.Controllers
                     }
                 }
                 int? currentNodeId = DataVerifier.GetNodeIdInWebsiteRecord(
-                    node.Value.url.AbsolutePath,
+                    node.Value.url.OriginalString,
                     node.Value.WebsiteRecordId,
                     _connectionString
                 );
                 if (!currentNodeId.HasValue)
                 {
                     int newCurrentNodeId = AddNode(
-                        node.Value.url.AbsolutePath,
+                        node.Value.url.OriginalString,
                         node.Value.WebsiteRecordId,
                         _connectionString
                     );
