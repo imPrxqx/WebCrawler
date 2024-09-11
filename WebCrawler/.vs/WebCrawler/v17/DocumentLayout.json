@@ -7,8 +7,24 @@
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:views\\websitescrawler\\showcrawler.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\getnodesdatafunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\getnodesdatafunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\websitescrawlercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\websitescrawlercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\recordsqueue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\recordsqueue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\frontnodemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\frontnodemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\nodescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\nodescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\views\\websitescrawler\\crawlers.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -29,10 +45,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\recordsqueue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\recordsqueue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -63,20 +75,12 @@
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\recordscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\nodescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\nodescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\dataverifier.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\dataverifier.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\getnodesdatafunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\getnodesdatafunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -86,73 +90,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Crawlers.cshtml",
-              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\Crawlers.cshtml",
-              "RelativeDocumentMoniker": "Views\\WebsitesCrawler\\Crawlers.cshtml",
-              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\Crawlers.cshtml",
-              "RelativeToolTip": "Views\\WebsitesCrawler\\Crawlers.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-11T14:51:19.111Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "WebsitesCrawlerController.cs",
-              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\WebsitesCrawlerController.cs",
-              "RelativeDocumentMoniker": "Controllers\\WebsitesCrawlerController.cs",
-              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\WebsitesCrawlerController.cs",
-              "RelativeToolTip": "Controllers\\WebsitesCrawlerController.cs",
-              "ViewState": "AgIAAGgAAAAAAAAAAAAwwHYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-05T14:27:28.342Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Models.cs",
-              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Models\\Models.cs",
-              "RelativeDocumentMoniker": "Models\\Models.cs",
-              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Models\\Models.cs",
-              "RelativeToolTip": "Models\\Models.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAsAAAAjAAAAAAAAAA==",
+              "Title": "FrontNodeManager.cs",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\FrontNodeManager.cs",
+              "RelativeDocumentMoniker": "Controllers\\FrontNodeManager.cs",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\FrontNodeManager.cs",
+              "RelativeToolTip": "Controllers\\FrontNodeManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-05T17:09:02.032Z",
+              "WhenOpened": "2024-09-11T16:04:00.441Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Query.cs",
-              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\GraphQl\\Query.cs",
-              "RelativeDocumentMoniker": "GraphQl\\Query.cs",
-              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\GraphQl\\Query.cs",
-              "RelativeToolTip": "GraphQl\\Query.cs",
-              "ViewState": "AQIAAFMAAAAAAAAAAAAmwGMAAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-05T14:14:48.812Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "init.sql",
-              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\docker-entrypoint-initdb.d\\init.sql",
-              "RelativeDocumentMoniker": "docker-entrypoint-initdb.d\\init.sql",
-              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\docker-entrypoint-initdb.d\\init.sql",
-              "RelativeToolTip": "docker-entrypoint-initdb.d\\init.sql",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2024-09-05T14:39:49.481Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -160,8 +115,7 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-09-05T14:34:32.533Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-05T14:34:32.533Z"
             },
             {
               "$type": "Document",
@@ -171,14 +125,14 @@
               "RelativeDocumentMoniker": "Views\\WebsitesCrawler\\ShowCrawler.cshtml",
               "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\ShowCrawler.cshtml",
               "RelativeToolTip": "Views\\WebsitesCrawler\\ShowCrawler.cshtml",
-              "ViewState": "AgIAAKwBAAAAAAAAAAAIwGsBAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAANwBAAAAAAAAAAAcwJwBAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-09-08T10:28:22.465Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 11,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
@@ -186,12 +140,11 @@
               "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAAAUAAAAAAAAAAAAUwBwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-08T12:08:59.904Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-08T12:08:59.904Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -199,12 +152,11 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAABUAAAAAAAAAAAAqwCkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-05T14:13:17.249Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-05T14:13:17.249Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "Node.cs",
               "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Models\\Node.cs",
               "RelativeDocumentMoniker": "Models\\Node.cs",
@@ -212,51 +164,37 @@
               "RelativeToolTip": "Models\\Node.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-05T15:32:52.585Z",
+              "WhenOpened": "2024-09-05T15:32:52.585Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "NodesController.cs",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\NodesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NodesController.cs",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\NodesController.cs",
+              "RelativeToolTip": "Controllers\\NodesController.cs",
+              "ViewState": "AgIAAKwAAAAAAAAAAAAcwDMAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-06T14:07:59.452Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-11T10:48:11.767Z",
+              "DocumentIndex": 1,
+              "Title": "GetNodesDataFunction.cs",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\GetNodesDataFunction.cs",
+              "RelativeDocumentMoniker": "Controllers\\GetNodesDataFunction.cs",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\GetNodesDataFunction.cs",
+              "RelativeToolTip": "Controllers\\GetNodesDataFunction.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-06T14:08:38.416Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "CreateCrawler.cshtml",
-              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\CreateCrawler.cshtml",
-              "RelativeDocumentMoniker": "Views\\WebsitesCrawler\\CreateCrawler.cshtml",
-              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\CreateCrawler.cshtml",
-              "RelativeToolTip": "Views\\WebsitesCrawler\\CreateCrawler.cshtml",
-              "ViewState": "AgIAABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-05T14:14:06.654Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Models\\ApplicationDbContext.cs",
-              "RelativeDocumentMoniker": "Models\\ApplicationDbContext.cs",
-              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Models\\ApplicationDbContext.cs",
-              "RelativeToolTip": "Models\\ApplicationDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-05T14:14:25.327Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
               "Title": "RecordsQueue.cs",
               "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\RecordsQueue.cs",
               "RelativeDocumentMoniker": "Controllers\\RecordsQueue.cs",
@@ -269,7 +207,103 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 2,
+              "Title": "WebsitesCrawlerController.cs",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\WebsitesCrawlerController.cs",
+              "RelativeDocumentMoniker": "Controllers\\WebsitesCrawlerController.cs",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\WebsitesCrawlerController.cs",
+              "RelativeToolTip": "Controllers\\WebsitesCrawlerController.cs",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAwwHYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-05T14:27:28.342Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "init.sql",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\docker-entrypoint-initdb.d\\init.sql",
+              "RelativeDocumentMoniker": "docker-entrypoint-initdb.d\\init.sql",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\docker-entrypoint-initdb.d\\init.sql",
+              "RelativeToolTip": "docker-entrypoint-initdb.d\\init.sql",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2024-09-05T14:39:49.481Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Query.cs",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\GraphQl\\Query.cs",
+              "RelativeDocumentMoniker": "GraphQl\\Query.cs",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\GraphQl\\Query.cs",
+              "RelativeToolTip": "GraphQl\\Query.cs",
+              "ViewState": "AQIAAFMAAAAAAAAAAAAmwGMAAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-05T14:14:48.812Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Models.cs",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Models\\Models.cs",
+              "RelativeDocumentMoniker": "Models\\Models.cs",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Models\\Models.cs",
+              "RelativeToolTip": "Models\\Models.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAsAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-05T17:09:02.032Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Crawlers.cshtml",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\Crawlers.cshtml",
+              "RelativeDocumentMoniker": "Views\\WebsitesCrawler\\Crawlers.cshtml",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\Crawlers.cshtml",
+              "RelativeToolTip": "Views\\WebsitesCrawler\\Crawlers.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-11T14:51:19.111Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-11T10:48:11.767Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CreateCrawler.cshtml",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\CreateCrawler.cshtml",
+              "RelativeDocumentMoniker": "Views\\WebsitesCrawler\\CreateCrawler.cshtml",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\CreateCrawler.cshtml",
+              "RelativeToolTip": "Views\\WebsitesCrawler\\CreateCrawler.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-05T14:14:06.654Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Models\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Models\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Models\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Models\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-05T14:14:25.327Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
               "Title": "RecordsController.cs",
               "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\RecordsController.cs",
               "RelativeDocumentMoniker": "Controllers\\RecordsController.cs",
@@ -281,19 +315,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "NodesController.cs",
-              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\NodesController.cs",
-              "RelativeDocumentMoniker": "Controllers\\NodesController.cs",
-              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\NodesController.cs",
-              "RelativeToolTip": "Controllers\\NodesController.cs",
-              "ViewState": "AQIAAKsAAAAAAAAAAAA4wDMAAAAgAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-06T14:07:59.452Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 19,
               "Title": "docker-compose.yml",
               "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\docker-compose.yml",
               "RelativeDocumentMoniker": "docker-compose.yml",
@@ -305,7 +327,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 18,
               "Title": "DataVerifier.cs",
               "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\DataVerifier.cs",
               "RelativeDocumentMoniker": "Controllers\\DataVerifier.cs",
@@ -314,18 +336,6 @@
               "ViewState": "AQIAADQAAAAAAAAAAAAgwAUAAAAPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-08T17:07:45.581Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "GetNodesDataFunction.cs",
-              "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\GetNodesDataFunction.cs",
-              "RelativeDocumentMoniker": "Controllers\\GetNodesDataFunction.cs",
-              "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\GetNodesDataFunction.cs",
-              "RelativeToolTip": "Controllers\\GetNodesDataFunction.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-06T14:08:38.416Z"
             }
           ]
         }

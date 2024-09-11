@@ -48,6 +48,14 @@
             </select>
         </label>
         <label>
+            Name Mode (works only for Website Mode):
+            <select id="label-selector">
+                <option value="title">Title</option>
+                <option value="url">URL</option>
+            </select>
+        </label>
+
+        <label>
             Web Page IDs (comma separated):
             @if (ViewData.Model != null)
             {
@@ -68,7 +76,7 @@
         let intervalId = null;
         let originalWebPageIds = [];
 
-        const cy = cytoscape({
+        let cy = cytoscape({
             container: document.getElementById('cy'),
             layout: { name: 'breadthfirst' },
             style: [
@@ -76,7 +84,7 @@
                     selector: 'node',
                     style: {
                         'background-color': '#666',
-                        'label': 'data(label)',
+                        'label': 'data(label)',         
                         'shape': 'data(shape)'
                     }
                 },
@@ -387,7 +395,8 @@
                         nodes.push({
                             data: {
                                 id: node.url,
-                                label: node.title,
+                                title: node.title,
+                                label: node.url,
                                 shape: shape,
                                 crawlTime: node.crawlTime,
                                 owner: node.owner,
@@ -406,7 +415,7 @@
                         if (!domainMap.has(domain)) {
                             domainMap.set(domain, {
                                 id: domain,
-                                label: node.title,
+                                label: node.url,
                                 shape: 'ellipse',
                                 crawlTime: "",
                                 websiteRecords: new Set(),
@@ -459,9 +468,9 @@
             function determineNodeShape(node) {
                 if (node.url === node.owner.url) {
                     return 'diamond';
-                } /*else if (node.owner.regexp === getDomainFromUrl(node.url)) {
+                } else if (node.owner.regexp === getDomainFromUrl(node.url)) {
                     return 'rectangle';
-                }*/ else {
+                } else {
                     return 'ellipse';
                 }
             }
@@ -470,6 +479,26 @@
                 const urlObj = new URL(url);
                 return urlObj.hostname;
             }
+
+            function updateNodeLabels() {
+                let selectedLabel = document.getElementById('label-selector').value;
+
+                cy.nodes().forEach(function (node) {
+
+                    if (selectedLabel === 'title') {
+                        node.data('label', node.data('title'));
+                    } else if (selectedLabel === 'url') {
+                        node.data('label', node.data('url'));
+                    }
+                });
+
+                cy.style().selector('node').style('label', 'data(label)').update();
+            }
+
+
+            document.getElementById('label-selector').addEventListener('change', function () {
+                updateNodeLabels();
+            });
         });
     </script>
     <script>
