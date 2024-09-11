@@ -117,13 +117,6 @@ public async Task<IActionResult> SaveCrawler(WebsiteRecordModel model)
             return View(id);
         }
 
-        [HttpPost]
-        public ActionResult SaveCrawlerId(int id)
-        {
-            HttpContext.Session.SetInt32("crawlerId", id);
-
-            return RedirectToAction("ShowCrawler");
-        }
 
         // GET: WebsitesCrawler/EditCrawler
         public ActionResult EditCrawler(int id)
