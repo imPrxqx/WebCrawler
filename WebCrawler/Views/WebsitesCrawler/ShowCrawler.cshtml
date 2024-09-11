@@ -260,7 +260,6 @@
             function createExecution(nodeUrl, boundary, isCrawled, websiteId) {
 
                 const apiUrl = `${window.location.origin}/api/Records`;
-                console.log(isCrawled);
 
                 if (isCrawled === false) {
                     const data = {
@@ -309,18 +308,56 @@
                         });
                 } else {
 
+                    const apiUrl = `${window.location.origin}/api/RestartRecord/${websiteId}`;
+
+                    const requestBody = JSON.stringify({ id: websiteId });
 
                     if (viewModeSelect.value === "website") {
-                        console.log(`Èíslo v poli.`);
 
+                        fetch(apiUrl, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: requestBody
+                        })
+                            .then(result => {
+                                alert('Execution created successfully!');
+
+                                isLive = true;
+                                const dataModeSelect = document.getElementById('data-mode');
+                                const selectedMode = dataModeSelect.value;
+                                isLive = selectedMode === 'live';
+                            })
+                            .catch(error => {
+                                console.error('Error creating new execution for existing record:', error);
+                                alert('Failed to create execution.');
+                            });
 
                     } else if (viewModeSelect.value === "domain") {
 
                         if (boundary.includes(websiteId)) {
-                            console.log(`Èíslo ${websiteId} je v poli.`);
-                        } else {
-                            console.log(`Èíslo ${websiteId} není v poli.`);
+                            fetch(apiUrl, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: requestBody
+                            })
+                                .then(result => {
+                                    alert('Execution created successfully!');
+
+                                    isLive = true;
+                                    const dataModeSelect = document.getElementById('data-mode');
+                                    const selectedMode = dataModeSelect.value;
+                                    isLive = selectedMode === 'live';
+                                })
+                                .catch(error => {
+                                    console.error('Error creating new execution for existing record:', error);
+                                    alert('Failed to create execution.');
+                                });
                         }
+
                     }
 
 
@@ -422,9 +459,9 @@
             function determineNodeShape(node) {
                 if (node.url === node.owner.url) {
                     return 'diamond';
-                } else if (node.owner.regexp === getDomainFromUrl(node.url)) {
+                } /*else if (node.owner.regexp === getDomainFromUrl(node.url)) {
                     return 'rectangle';
-                } else {
+                }*/ else {
                     return 'ellipse';
                 }
             }
