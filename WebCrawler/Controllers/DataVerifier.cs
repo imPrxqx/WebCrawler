@@ -118,5 +118,16 @@ namespace WebCrawler.Controllers
 
             return result.Any();
         }
+
+        public static bool IsOnlyIdInModel(WebsiteRecordModel model)
+        {
+            return string.IsNullOrEmpty(model.Url)
+                && string.IsNullOrEmpty(model.BoundaryRegExp)
+                && (model.Days == 0 || model.Days == null)
+                && (model.Minutes == 0 || model.Minutes == null)
+                && (model.Hours == 0 || model.Hours == null)
+                && string.IsNullOrEmpty(model.Label)
+                && string.IsNullOrEmpty(model.Tags);
+        }
     }
 }
