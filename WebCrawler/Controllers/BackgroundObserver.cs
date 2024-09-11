@@ -146,6 +146,7 @@ namespace WebCrawler.Controllers
                         if (record.IsActive)
                         {
                             record.LastChange = DateTime.Now;
+                            updateRecord(record, _connectionString);
                         }
                     }
                 }
