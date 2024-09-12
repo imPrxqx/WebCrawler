@@ -90,7 +90,7 @@
                     selector: 'node',
                     style: {
                         'background-color': '#666',
-                        'label': 'data(label)',         
+                        'label': 'data(title)',         
                         'shape': 'data(shape)'
                     }
                 },
@@ -119,8 +119,20 @@
 
             function changeViewMode() {
                 cy.elements().remove();
+
+                if (viewModeSelect.value === 'domain') {
+                    cy.style().selector('node').style('label', 'data(label)').update();
+                } else if (viewModeSelect.value === 'website') {
+                    cy.style().selector('node').style('label', 'data(title)').update();
+                    
+                    const nameModeSelect = document.getElementById('label-selector');
+                    nameModeSelect.value = 'title';
+                }
+
                 fetchData();
-                
+
+
+
             }
 
             function checkWebPageIdsChange() {
@@ -178,7 +190,6 @@
 
                         cy.add(filteredElements);
 
-                        cy.nodes().unlock();
 
                         cy.layout({
                             name: 'grid',
@@ -186,6 +197,7 @@
                             avoidOverlapPadding: 500
                         }).run();
 
+                        cy.nodes().unlock();
 
                         cy.on('dblclick', 'node', function (event) {
                             const node = event.target;
@@ -301,8 +313,8 @@
                             currentIds.push(result);
                             webPageIdsInput.value = currentIds.join(',');
 
-                            isLive = true;
                             const dataModeSelect = document.getElementById('data-mode');
+                            dataModeSelect.value = 'live';
                             const selectedMode = dataModeSelect.value;
                             isLive = selectedMode === 'live';
 
@@ -333,10 +345,11 @@
                             .then(result => {
                                 alert('Execution created successfully!');
 
-                                isLive = true;
                                 const dataModeSelect = document.getElementById('data-mode');
+                                dataModeSelect.value = 'live';
                                 const selectedMode = dataModeSelect.value;
                                 isLive = selectedMode === 'live';
+
                             })
                             .catch(error => {
                                 console.error('Error creating new execution for existing record:', error);
@@ -366,14 +379,8 @@
                                     alert('Failed to create execution.');
                                 });
                         }
-
                     }
-
-
-    
                 }
-
-                
             }
 
 
@@ -387,7 +394,7 @@
                         
                         let isCrawled;
 
-                        if (node.crawlTime === null) {
+                        if (node.crawlTime.length === 0) {
                             isCrawled = false;
                         } else {
                             isCrawled = true;
@@ -416,7 +423,7 @@
                         if (!domainMap.has(domain)) {
                             domainMap.set(domain, {
                                 id: domain,
-                                label: getDomainFromUrl(node.url),
+                                label: domain,
                                 shape: 'ellipse',
                                 crawlTime: "",
                                 websiteRecords: new Set(),
@@ -427,7 +434,7 @@
 
                         let isCrawled = false;
 
-                        if (node.crawlTime !== null) {
+                        if (node.crawlTime.length !== 0) {
                             domainMap.get(domain).crawled = true;
                         } 
 
@@ -528,7 +535,7 @@
 
                 if (viewModeSelect.value !== 'website') {
                     return;
-                }
+                } 
 
                 if (isChangedLabel === false) {
                     return;
@@ -538,16 +545,18 @@
 
                 let selectedLabel = document.getElementById('label-selector').value;
 
+                
                 cy.nodes().forEach(function (node) {
 
                     if (selectedLabel === 'title') {
-                        node.data('label', node.data('title'));
+                        cy.style().selector('node').style('label', 'data(title)').update();
+
+
                     } else if (selectedLabel === 'url') {
-                        node.data('label', node.data('url'));
+                        cy.style().selector('node').style('label', 'data(label)').update();
                     }
                 });
 
-                cy.style().selector('node').style('label', 'data(label)').update();
             }
 
             function changeModeName() {
