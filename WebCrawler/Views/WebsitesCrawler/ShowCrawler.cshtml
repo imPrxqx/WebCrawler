@@ -10,6 +10,7 @@
     <title>Crawler Graph</title>
     <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.22.0/dist/cytoscape.min.js"></script>
 
+
     <style>
         #cy {
             width: 100%;
@@ -72,13 +73,18 @@
     <div id="cy"></div>
     <div id="node-info" class="node-info"></div>
     <script>
+        let isChangedLabel = false;
         let isLive = false;
         let intervalId = null;
         let originalWebPageIds = [];
 
+        const viewModeSelect = document.getElementById('view-mode');
+        const dataModeSelect = document.getElementById('data-mode');
+        const webPageIdsInput = document.getElementById('web-page-ids');
+        const updateGraphButton = document.getElementById('update-graph');
+
         let cy = cytoscape({
             container: document.getElementById('cy'),
-            layout: { name: 'breadthfirst' },
             style: [
                 {
                     selector: 'node',
@@ -102,11 +108,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            const viewModeSelect = document.getElementById('view-mode');
-            const dataModeSelect = document.getElementById('data-mode');
-            const webPageIdsInput = document.getElementById('web-page-ids');
-            const updateGraphButton = document.getElementById('update-graph');
-            
+
             originalWebPageIds = webPageIdsInput.value.split(',').map(id => id.trim()); 
 
             fetchData();
@@ -150,6 +152,7 @@
 
             function fetchData() {
 
+                checkNodeLabelsChange();
                 checkWebPageIdsChange();
 
                 const webPageIds = webPageIdsInput.value.split(',').map(id => id.trim()).join(',');
@@ -159,7 +162,6 @@
                     .then(data => {
                         const newElements = convertJsonToCytoscapeElements(data, viewModeSelect.value);
 
-         
                         cy.nodes().lock();
 
                         const filteredElements = newElements.filter(element => {
@@ -169,12 +171,6 @@
                                 return cy.edges(`[source = "${source}"][target = "${target}"]`).length === 0;
                             } else if (element.data.id) {
                                 const nodeExists = cy.getElementById(element.data.id).length > 0;
-                                if (!nodeExists) {
-                                    element.position = {
-                                        x: Math.random() * cy.width(),  
-                                        y: Math.random() * cy.height()  
-                                    };
-                                }
                                 return !nodeExists;
                             }
                             return false;
@@ -183,7 +179,13 @@
                         cy.add(filteredElements);
 
                         cy.nodes().unlock();
-                        
+
+                        cy.layout({
+                            name: 'grid',
+                            fit: false,
+                            avoidOverlapPadding: 500
+                        }).run();
+
 
                         cy.on('dblclick', 'node', function (event) {
                             const node = event.target;
@@ -415,7 +417,7 @@
                         if (!domainMap.has(domain)) {
                             domainMap.set(domain, {
                                 id: domain,
-                                label: node.url,
+                                label: getDomainFromUrl(node.url),
                                 shape: 'ellipse',
                                 crawlTime: "",
                                 websiteRecords: new Set(),
@@ -433,7 +435,7 @@
 
                         domainMap.get(domain).crawlTime = domainMap.get(domain).crawlTime + " " + node.crawlTime;
                         domainMap.get(domain).websiteRecords.add(node.owner.identifier);
-                        nodeUrls.add(node.url);
+                        nodeUrls.add(domain);
                     });
 
 
@@ -448,20 +450,63 @@
                                 crawled: domainNode.crawled
                             }
                         });
+
                     });
                 }
 
-                const edges = data.data.nodes.flatMap(node =>
-                    node.links
-                        .filter(neighbour => nodeUrls.has(neighbour.url))
-                        .map(neighbour => ({
-                            data: {
-                                source: viewMode === 'website' ? node.url : getDomainFromUrl(node.url),
-                                target: viewMode === 'website' ? neighbour.url : getDomainFromUrl(neighbour.url)
-                            }
-                        }))
-                );
+                let edges = [];
 
+                if (viewMode === 'website') {
+
+                    edges = data.data.nodes.flatMap(node =>
+                        node.links
+                            .filter(neighbour => nodeUrls.has(neighbour.url))
+                            .map(neighbour => ({
+                                data: {
+                                    source: node.url,
+                                    target: neighbour.url
+                                }
+                            }))
+                    );
+                } else if (viewMode === 'domain') {
+
+
+                    // Tohle dela sjednoceni domen!!!! 
+                    const unifiedNodes = data.data.nodes.reduce((acc, node) => {
+                        const nodeUrl = getDomainFromUrl(node.url);
+                        const links = node.links.map(link => getDomainFromUrl(link.url));
+
+                        if (!acc[nodeUrl]) {
+                            acc[nodeUrl] = new Set(links);
+                        } else {
+                            links.forEach(link => acc[nodeUrl].add(link));
+                        }
+
+                        return acc;
+                    }, {});
+
+                    const newNodes = Object.keys(unifiedNodes).map(nodeUrl => ({
+                        data: {
+                            nodeUrl,
+                            links: Array.from(unifiedNodes[nodeUrl])
+                        }
+                    }));
+
+                    // Nastavuje hrany domen... 
+                    edges = newNodes.flatMap(node =>
+                        node.data.links
+                            .filter(link => nodeUrls.has(link))
+                            .map(link => ({
+                                data: {
+                                    source: node.data.nodeUrl,
+                                    target: link
+                                }
+                            }))
+                    );
+
+                }
+                
+              
                 return [...nodes, ...edges];
             }
 
@@ -480,7 +525,18 @@
                 return urlObj.hostname;
             }
 
-            function updateNodeLabels() {
+            function checkNodeLabelsChange() {
+
+                if (viewModeSelect.value !== 'website') {
+                    return;
+                }
+
+                if (isChangedLabel === false) {
+                    return;
+                }
+
+                isChangedLabel = false;
+
                 let selectedLabel = document.getElementById('label-selector').value;
 
                 cy.nodes().forEach(function (node) {
@@ -495,9 +551,14 @@
                 cy.style().selector('node').style('label', 'data(label)').update();
             }
 
+            function changeModeName() {
+                isChangedLabel = true;           
+            }
+
 
             document.getElementById('label-selector').addEventListener('change', function () {
-                updateNodeLabels();
+                changeModeName();
+                checkNodeLabelsChange();
             });
         });
     </script>

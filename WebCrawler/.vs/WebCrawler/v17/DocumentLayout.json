@@ -11,12 +11,12 @@
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\getnodesdatafunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\websitescrawlercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\websitescrawlercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\recordsqueue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\recordsqueue.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\websitescrawlercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|solutionrelative:controllers\\websitescrawlercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D16083C1-BF40-4915-83C2-3E4F7D89E438}|WebCrawler.csproj|c:\\users\\honza\\downloads\\webcrawler\\webcrawler\\controllers\\frontnodemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -102,8 +102,7 @@
               "RelativeToolTip": "Controllers\\FrontNodeManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-11T16:04:00.441Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-11T16:04:00.441Z"
             },
             {
               "$type": "Document",
@@ -125,7 +124,7 @@
               "RelativeDocumentMoniker": "Views\\WebsitesCrawler\\ShowCrawler.cshtml",
               "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\ShowCrawler.cshtml",
               "RelativeToolTip": "Views\\WebsitesCrawler\\ShowCrawler.cshtml",
-              "ViewState": "AgIAANwBAAAAAAAAAAAcwJwBAABCAAAAAAAAAA==",
+              "ViewState": "AgIAAPsBAAAAAAAAAAAwwO4BAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-09-08T10:28:22.465Z",
               "EditorCaption": ""
@@ -176,8 +175,7 @@
               "RelativeToolTip": "Controllers\\NodesController.cs",
               "ViewState": "AgIAAKwAAAAAAAAAAAAcwDMAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-06T14:07:59.452Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-06T14:07:59.452Z"
             },
             {
               "$type": "Document",
@@ -187,14 +185,14 @@
               "RelativeDocumentMoniker": "Controllers\\GetNodesDataFunction.cs",
               "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\GetNodesDataFunction.cs",
               "RelativeToolTip": "Controllers\\GetNodesDataFunction.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABYAAAAAAAAAAAAgwAgAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-06T14:08:38.416Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "RecordsQueue.cs",
               "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\RecordsQueue.cs",
               "RelativeDocumentMoniker": "Controllers\\RecordsQueue.cs",
@@ -207,7 +205,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "WebsitesCrawlerController.cs",
               "DocumentMoniker": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Controllers\\WebsitesCrawlerController.cs",
               "RelativeDocumentMoniker": "Controllers\\WebsitesCrawlerController.cs",
@@ -215,8 +213,7 @@
               "RelativeToolTip": "Controllers\\WebsitesCrawlerController.cs",
               "ViewState": "AgIAAGgAAAAAAAAAAAAwwHYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-05T14:27:28.342Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-05T14:27:28.342Z"
             },
             {
               "$type": "Document",
