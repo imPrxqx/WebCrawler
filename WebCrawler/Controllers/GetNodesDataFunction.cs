@@ -30,7 +30,7 @@ public class GetNodesDataFunction
             return null;
         }
 
-        return new Node(WebsiteRecordId, url, links);
+        return new Node(WebsiteRecordId, url, links, title);
     }
 
     private string GetTitlePage(HtmlDocument htmlDocument)
