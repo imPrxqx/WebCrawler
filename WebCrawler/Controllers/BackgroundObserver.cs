@@ -92,26 +92,27 @@ namespace WebCrawler.Controllers
 
         private void updateRecord(WebsiteRecordModel record, string connectionString)
         {
-            string updateSql = @"
+            string updateSql =
+                @"
         UPDATE public.""WebsiteRecord""
         SET ""LastChange"" = @LastChange
         WHERE ""Id"" = @Id;
     ";
 
-            var parameters = new
-            {
-                LastChange = record.LastChange,
-                Id = record.Id
-            };
+            var parameters = new { LastChange = record.LastChange, Id = record.Id };
 
             try
             {
                 DataAccess.SaveData(updateSql, parameters, connectionString);
-                Console.WriteLine($"Updated LastChange for WebsiteRecord ID: {record.Id} with {record.LastChange}");
+                Console.WriteLine(
+                    $"Updated LastChange for WebsiteRecord ID: {record.Id} with {record.LastChange}"
+                );
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error updating WebsiteRecord ID: {record.Id}, Error: {ex.Message}");
+                Console.WriteLine(
+                    $"Error updating WebsiteRecord ID: {record.Id}, Error: {ex.Message}"
+                );
                 throw;
             }
         }
@@ -142,12 +143,12 @@ namespace WebCrawler.Controllers
                     )
                     {
                         NodeSniffer(node);
-                        if (record.IsActive)
-                        {
-                            record.LastChange = DateTime.Now;
-                        }
                     }
-                    
+                    if (record.IsActive)
+                    {
+                        record.LastChange = DateTime.Now;
+                        updateRecord(record, _connectionString);
+                    }
                 }
                 else
                 {
@@ -221,16 +222,46 @@ namespace WebCrawler.Controllers
                 );
                 if (!currentNodeId.HasValue)
                 {
-                    int newCurrentNodeId = AddNode(
+                    currentNodeId = AddNode(
                         node.Value.url.OriginalString,
                         node.Value.WebsiteRecordId,
                         _connectionString
                     );
                 }
+                UpdateNodeWithTitle(currentNodeId, node.Value.Title, _connectionString);
                 foreach (int NeighbourNodeId in ids)
                 {
                     AddNeighbour(NeighbourNodeId, currentNodeId, _connectionString);
                 }
+            }
+        }
+
+        private void UpdateNodeWithTitle(int? currentNodeId, string title, string connectionString)
+        {
+            if (!currentNodeId.HasValue)
+            {
+                Console.WriteLine("missing current node id");
+                return;
+            }
+
+            string sql =
+                @"
+        UPDATE public.""Node""
+        SET ""Title"" = @Title
+        WHERE ""Id"" = @Id;
+    ";
+
+            var parameters = new { Title = title, Id = currentNodeId.Value };
+
+            try
+            {
+                DataAccess.SaveData(sql, parameters, connectionString);
+                Console.WriteLine($"Updated Node ID: {currentNodeId.Value} with Title: {title}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating node title: {ex.Message}");
+                throw;
             }
         }
 
