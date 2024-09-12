@@ -247,11 +247,17 @@ namespace WebCrawler.Controllers
             string sql =
                 @"
         UPDATE public.""Node""
-        SET ""Title"" = @Title
+        SET ""Title"" = @Title,
+            ""CrawlTime"" = @CrawlTime
         WHERE ""Id"" = @Id;
     ";
 
-            var parameters = new { Title = title, Id = currentNodeId.Value };
+            var parameters = new
+            {
+                Title = title,
+                CrawlTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                Id = currentNodeId.Value,
+            };
 
             try
             {
@@ -300,15 +306,14 @@ namespace WebCrawler.Controllers
         {
             string sql =
                 @"
-        INSERT INTO public.""Node"" (""Title"", ""CrawlTime"", ""UrlMain"", ""WebsiteRecordId"")
-        VALUES (@Title, @CrawlTime, @UrlMain, @WebsiteRecordId)
+        INSERT INTO public.""Node"" (""Title"", ""UrlMain"", ""WebsiteRecordId"")
+        VALUES (@Title, @UrlMain, @WebsiteRecordId)
         RETURNING ""Id"";
     ";
 
             var parameters = new
             {
                 Title = url,
-                CrawlTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 UrlMain = url,
                 WebsiteRecordId = websiteRecordId,
             };
