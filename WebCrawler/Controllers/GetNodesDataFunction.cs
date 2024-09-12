@@ -6,6 +6,7 @@ public class GetNodesDataFunction
     public Node? GetNextNode(Uri url, int WebsiteRecordId)
     {
         List<Uri> links;
+        string title; 
 
         try
         {
@@ -19,6 +20,9 @@ public class GetNodesDataFunction
 
                 links = GetAllLinks(htmlDocument, url);
                 CorrectUrls(links);
+
+                title = GetTitlePage(htmlDocument);
+
             }
         }
         catch
@@ -28,6 +32,20 @@ public class GetNodesDataFunction
 
         return new Node(WebsiteRecordId, url, links);
     }
+
+    private string GetTitlePage(HtmlDocument htmlDocument)
+    {
+        HtmlNode? titleNode = htmlDocument.DocumentNode.SelectSingleNode("//title");
+
+        if (titleNode != null)
+        {
+            string titlePage = titleNode.InnerText.Trim();
+            return titlePage;
+        }
+
+        return string.Empty;
+    }
+
 
     private List<Uri> GetAllLinks(HtmlDocument htmlDocument, Uri baseUrl)
     {
