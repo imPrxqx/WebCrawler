@@ -306,14 +306,15 @@ namespace WebCrawler.Controllers
         {
             string sql =
                 @"
-        INSERT INTO public.""Node"" (""Title"", ""UrlMain"", ""WebsiteRecordId"")
-        VALUES (@Title, @UrlMain, @WebsiteRecordId)
+        INSERT INTO public.""Node"" (""Title"", ""CrawlTime"", ""UrlMain"", ""WebsiteRecordId"")
+        VALUES (@Title, @CrawlTime, @UrlMain, @WebsiteRecordId)
         RETURNING ""Id"";
     ";
 
             var parameters = new
             {
                 Title = url,
+                CrawlTime = "",
                 UrlMain = url,
                 WebsiteRecordId = websiteRecordId,
             };
