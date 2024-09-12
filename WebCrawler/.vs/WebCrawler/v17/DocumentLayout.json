@@ -124,7 +124,7 @@
               "RelativeDocumentMoniker": "Views\\WebsitesCrawler\\ShowCrawler.cshtml",
               "ToolTip": "C:\\Users\\honza\\Downloads\\WebCrawler\\WebCrawler\\Views\\WebsitesCrawler\\ShowCrawler.cshtml",
               "RelativeToolTip": "Views\\WebsitesCrawler\\ShowCrawler.cshtml",
-              "ViewState": "AgIAAPsBAAAAAAAAAAAwwO4BAAAwAAAAAAAAAA==",
+              "ViewState": "AgIAAFgBAAAAAAAAAAAhwGwBAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-09-08T10:28:22.465Z",
               "EditorCaption": ""
@@ -187,8 +187,7 @@
               "RelativeToolTip": "Controllers\\GetNodesDataFunction.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAAgwAgAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-06T14:08:38.416Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-06T14:08:38.416Z"
             },
             {
               "$type": "Document",
@@ -200,8 +199,7 @@
               "RelativeToolTip": "Controllers\\RecordsQueue.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-11T11:00:25.59Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-11T11:00:25.59Z"
             },
             {
               "$type": "Document",
