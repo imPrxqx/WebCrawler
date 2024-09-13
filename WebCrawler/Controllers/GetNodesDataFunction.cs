@@ -6,7 +6,7 @@ public class GetNodesDataFunction
     public Node? GetNextNode(Uri url, int WebsiteRecordId)
     {
         List<Uri> links;
-        string title; 
+        string title;
 
         try
         {
@@ -22,7 +22,6 @@ public class GetNodesDataFunction
                 CorrectUrls(links);
 
                 title = GetTitlePage(htmlDocument);
-
             }
         }
         catch
@@ -45,7 +44,6 @@ public class GetNodesDataFunction
 
         return string.Empty;
     }
-
 
     private List<Uri> GetAllLinks(HtmlDocument htmlDocument, Uri baseUrl)
     {
