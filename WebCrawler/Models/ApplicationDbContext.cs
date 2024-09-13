@@ -6,7 +6,8 @@ namespace WebCrawler.Models
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options) { }
 
         public DbSet<WebsiteRecordModel> WebsiteRecords { get; set; }
         public DbSet<NodeModel> NodeRecords { get; set; }
@@ -14,21 +15,25 @@ namespace WebCrawler.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<NodeModel>()
-                       .HasOne<WebsiteRecordModel>()
-                       .WithMany()
-                       .HasForeignKey(n => n.WebsiteRecordId);
+            modelBuilder
+                .Entity<NodeModel>()
+                .HasOne<WebsiteRecordModel>()
+                .WithMany()
+                .HasForeignKey(n => n.WebsiteRecordId);
 
-            modelBuilder.Entity<NodeNeighbourModel>()
+            modelBuilder
+                .Entity<NodeNeighbourModel>()
                 .HasKey(nn => new { nn.NodeId, nn.NeighbourNodeId });
 
-            modelBuilder.Entity<NodeNeighbourModel>()
+            modelBuilder
+                .Entity<NodeNeighbourModel>()
                 .HasOne<NodeModel>()
                 .WithMany()
                 .HasForeignKey(nn => nn.NodeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<NodeNeighbourModel>()
+            modelBuilder
+                .Entity<NodeNeighbourModel>()
                 .HasOne<NodeModel>()
                 .WithMany()
                 .HasForeignKey(nn => nn.NeighbourNodeId)
