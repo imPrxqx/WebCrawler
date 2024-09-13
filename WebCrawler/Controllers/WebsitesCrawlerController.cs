@@ -61,17 +61,17 @@ namespace WebCrawler.Controllers
         }
 
         [HttpPost]
-public async Task<IActionResult> SaveCrawler(WebsiteRecordModel model)
-{
-    if (DataVerifier.WebsiteRecordVerifier(model))
-    {
-        try
+        public async Task<IActionResult> SaveCrawler(WebsiteRecordModel model)
         {
-            string sql;
-            if (DataVerifier.DoesWebsiteRecordExist(model.Id, _connectionString))
+            if (DataVerifier.WebsiteRecordVerifier(model))
             {
-				sql =
-			@"
+                try
+                {
+                    string sql;
+                    if (DataVerifier.DoesWebsiteRecordExist(model.Id, _connectionString))
+                    {
+                        sql =
+                            @"
         UPDATE public.""WebsiteRecord"" 
         SET ""Url"" = @Url, ""BoundaryRegExp"" = @BoundaryRegExp, ""Days"" = @Days, 
             ""Hours"" = @Hours, ""Minutes"" = @Minutes, ""Label"" = @Label, 
@@ -79,12 +79,12 @@ public async Task<IActionResult> SaveCrawler(WebsiteRecordModel model)
         WHERE ""Id"" = @Id;
     ";
 
-				DataAccess.SaveData(sql, model, _connectionString);
-            }
-            else
-            {
-				sql =
-			@"
+                        DataAccess.SaveData(sql, model, _connectionString);
+                    }
+                    else
+                    {
+                        sql =
+                            @"
         INSERT INTO public.""WebsiteRecord"" 
         (""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange"") 
         VALUES 
@@ -92,17 +92,17 @@ public async Task<IActionResult> SaveCrawler(WebsiteRecordModel model)
         RETURNING ""Id"";
     ";
 
-				DataAccess.SaveData(sql, model, _connectionString);
+                        DataAccess.SaveData(sql, model, _connectionString);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Content($"Error connecting to database: {ex.Message}");
+                }
             }
-        }
-        catch (Exception ex)
-        {
-            return Content($"Error connecting to database: {ex.Message}");
-        }
-    }
 
-    return Content($"Record added successfully: {model.Id}");
-}
+            return Content($"Record added successfully: {model.Id}");
+        }
 
         // GET: WebsitesCrawler/CreateCrawler
         public ActionResult CreateCrawler()
@@ -113,10 +113,8 @@ public async Task<IActionResult> SaveCrawler(WebsiteRecordModel model)
         // GET: WebsitesCrawler/ShowCrawler
         public ActionResult ShowCrawler(int? id)
         {
-
             return View(id);
         }
-
 
         // GET: WebsitesCrawler/EditCrawler
         public ActionResult EditCrawler(int id)
