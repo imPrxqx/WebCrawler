@@ -6,35 +6,35 @@ using WebCrawler.Models;
 
 namespace WebCrawler.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class NodesController : ControllerBase
-	{
-		private readonly string _connectionString;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class NodesController : ControllerBase
+    {
+        private readonly string _connectionString;
 
-		public NodesController(ApplicationDbContext context)
-		{
-			Env.Load();
-			_connectionString = GetConnectionString();
-		}
+        public NodesController(ApplicationDbContext context)
+        {
+            Env.Load();
+            _connectionString = GetConnectionString();
+        }
 
-		private string GetConnectionString()
-		{
-			string databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME");
-			string databasePass = Environment.GetEnvironmentVariable("DATABASE_PASS");
-			string databaseUser = Environment.GetEnvironmentVariable("DATABASE_USER");
-			string databaseServer = Environment.GetEnvironmentVariable("DATABASE_SERVER");
-			string databasePort = Environment.GetEnvironmentVariable("DATABASE_PORT");
+        private string GetConnectionString()
+        {
+            string databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME");
+            string databasePass = Environment.GetEnvironmentVariable("DATABASE_PASS");
+            string databaseUser = Environment.GetEnvironmentVariable("DATABASE_USER");
+            string databaseServer = Environment.GetEnvironmentVariable("DATABASE_SERVER");
+            string databasePort = Environment.GetEnvironmentVariable("DATABASE_PORT");
 
-			return $"Host={databaseServer};Port={databasePort};Username={databaseUser};Password={databasePass};Database={databaseName};";
-		}
+            return $"Host={databaseServer};Port={databasePort};Username={databaseUser};Password={databasePass};Database={databaseName};";
+        }
 
-		// GET: api/<NodesController>
-		[HttpGet]
-		public IEnumerable<NodeModel> Get()
-		{
-			string sql =
-				@"
+        // GET: api/<NodesController>
+        [HttpGet]
+        public IEnumerable<NodeModel> Get()
+        {
+            string sql =
+                @"
                 SELECT 
                     ""Id"", 
                     ""Title"", 
@@ -44,17 +44,17 @@ namespace WebCrawler.Controllers
                 FROM ""Node"";
             ";
 
-			var nodes = DataAccess.LoadData<NodeModel, dynamic>(sql, new { }, _connectionString);
+            var nodes = DataAccess.LoadData<NodeModel, dynamic>(sql, new { }, _connectionString);
 
-			return nodes;
-		}
+            return nodes;
+        }
 
-		// GET api/<NodesController>/5
-		[HttpGet("{id}")]
-		public NodeModel Get(int id)
-		{
-			string sql =
-				@"
+        // GET api/<NodesController>/5
+        [HttpGet("{id}")]
+        public NodeModel Get(int id)
+        {
+            string sql =
+                @"
         SELECT 
             ""Id"", 
             ""Title"", 
@@ -65,70 +65,70 @@ namespace WebCrawler.Controllers
         WHERE ""Id"" = @Id;
     ";
 
-			var node = DataAccess
-				.LoadData<NodeModel, dynamic>(sql, new { Id = id }, _connectionString)
-				.FirstOrDefault();
+            var node = DataAccess
+                .LoadData<NodeModel, dynamic>(sql, new { Id = id }, _connectionString)
+                .FirstOrDefault();
 
-			if (node == null)
-			{
-				return new NodeModel();
-			}
+            if (node == null)
+            {
+                return new NodeModel();
+            }
 
-			return node;
-		}
+            return node;
+        }
 
-		// POST api/<NodesController>
-		[HttpPost]
-		public void Post([FromBody] NodeModel model)
-		{
-			if (!(model == null))
-			{
-				if (DataVerifier.DoesWebsiteRecordExist(model.WebsiteRecordId, _connectionString))
-				{
-					string sql =
-						@"
+        // POST api/<NodesController>
+        [HttpPost]
+        public void Post([FromBody] NodeModel model)
+        {
+            if (!(model == null))
+            {
+                if (DataVerifier.DoesWebsiteRecordExist(model.WebsiteRecordId, _connectionString))
+                {
+                    string sql =
+                        @"
         INSERT INTO ""Node"" 
         (""Title"", ""CrawlTime"", ""UrlMain"", ""WebsiteRecordId"") 
         VALUES 
         (@Title, @CrawlTime, @UrlMain, @WebsiteRecordId);
     ";
-					try
-					{
-						DataAccess.SaveData(
-							sql,
-							new
-							{
-								Title = model.Title,
-								CrawlTime = model.CrawlTime,
-								UrlMain = model.UrlMain,
-								WebsiteRecordId = model.WebsiteRecordId,
-							},
-							_connectionString
-						);
-						Console.WriteLine($"New Node created using post");
-					}
-					catch (Exception ex)
-					{
-						Console.WriteLine($"Server error: {ex.Message}");
-					}
-				}
-				else
-				{
-					Console.WriteLine($"Node badly filled: {model.Id}");
-				}
-			}
-		}
+                    try
+                    {
+                        DataAccess.SaveData(
+                            sql,
+                            new
+                            {
+                                Title = model.Title,
+                                CrawlTime = model.CrawlTime,
+                                UrlMain = model.UrlMain,
+                                WebsiteRecordId = model.WebsiteRecordId,
+                            },
+                            _connectionString
+                        );
+                        Console.WriteLine($"New Node created using post");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Server error: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Node badly filled: {model.Id}");
+                }
+            }
+        }
 
-		// PUT api/<NodesController>/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] NodeModel model)
-		{
-			if (!(model == null))
-			{
-				if (DataVerifier.DoesWebsiteRecordExist(model.WebsiteRecordId, _connectionString))
-				{
-					string sql =
-						@"
+        // PUT api/<NodesController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] NodeModel model)
+        {
+            if (!(model == null))
+            {
+                if (DataVerifier.DoesWebsiteRecordExist(model.WebsiteRecordId, _connectionString))
+                {
+                    string sql =
+                        @"
         UPDATE ""Node"" 
         SET 
             ""Title"" = @Title, 
@@ -138,61 +138,61 @@ namespace WebCrawler.Controllers
         WHERE 
             ""Id"" = @Id;
     ";
-					try
-					{
-						DataAccess.SaveData(
-							sql,
-							new
-							{
-								Id = id,
-								Title = model.Title,
-								CrawlTime = model.CrawlTime,
-								UrlMain = model.UrlMain,
-								WebsiteRecordId = model.WebsiteRecordId,
-							},
-							_connectionString
-						);
+                    try
+                    {
+                        DataAccess.SaveData(
+                            sql,
+                            new
+                            {
+                                Id = id,
+                                Title = model.Title,
+                                CrawlTime = model.CrawlTime,
+                                UrlMain = model.UrlMain,
+                                WebsiteRecordId = model.WebsiteRecordId,
+                            },
+                            _connectionString
+                        );
 
-						Console.WriteLine($"Node with Id {id} updated successfully.");
-					}
-					catch (Exception ex)
-					{
-						Console.WriteLine($"Server error: {ex.Message}");
-					}
-				}
-				else
-				{
-					Console.WriteLine($"NODE badly filled: {model.Id}");
-				}
-			}
-		}
+                        Console.WriteLine($"Node with Id {id} updated successfully.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Server error: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"NODE badly filled: {model.Id}");
+                }
+            }
+        }
 
-		// DELETE api/<NodesController>/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
-			try
-			{
-				string sql =
-					@"
+        // DELETE api/<NodesController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            try
+            {
+                string sql =
+                    @"
         DELETE FROM ""Node"" 
         WHERE ""Id"" = @Id;
     ";
-				string deleteNodeNeighboursSql =
-					@"
+                string deleteNodeNeighboursSql =
+                    @"
                     DELETE FROM public.""NodeNeighbour""
                     WHERE ""NodeId"" IN (SELECT ""Id"" FROM public.""Node"" WHERE ""WebsiteRecordId"" = @Id)
                     OR ""NeighbourNodeId"" IN (SELECT ""Id"" FROM public.""Node"" WHERE ""WebsiteRecordId"" = @Id);
                 ";
-				DataAccess.SaveData(deleteNodeNeighboursSql, new { Id = id }, _connectionString);
-				DataAccess.SaveData(sql, new { Id = id }, _connectionString);
+                DataAccess.SaveData(deleteNodeNeighboursSql, new { Id = id }, _connectionString);
+                DataAccess.SaveData(sql, new { Id = id }, _connectionString);
 
-				Console.WriteLine($"Record with Id {id} deleted successfully.");
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Server error: {ex.Message}");
-			}
-		}
-	}
+                Console.WriteLine($"Record with Id {id} deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Server error: {ex.Message}");
+            }
+        }
+    }
 }
