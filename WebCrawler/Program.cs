@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using WebCrawler.Controllers;
 using WebCrawler.GraphQl;
 using WebCrawler.Models;
-using WebCrawler.Controllers;
+
 namespace WebCrawler
 {
     public class Program
@@ -21,7 +22,7 @@ namespace WebCrawler
                 .AddType<WebCrawler.GraphQl.WebPage>()
                 .AddType<WebCrawler.GraphQl.Node>()
                 .RegisterService<ApplicationDbContext>();
-		
+
             builder.Services.AddSingleton<RecordsQueue>();
 
             builder.Services.AddHostedService<BackgroundObserver>();
