@@ -16,6 +16,8 @@ namespace WebCrawler.Models
         public string Label { get; set; }
         public bool IsActive { get; set; }
         public string? Tags { get; set; }
+        public DateTime? LastExecution { get; set; }
+        public bool? LastStatus { get; set; }
     }
 
     [Table("Node")]
