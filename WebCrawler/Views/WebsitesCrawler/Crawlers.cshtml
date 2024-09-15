@@ -105,9 +105,11 @@
 		</div>
 
 		<div>
-
-			<ul class="table-like" id="crawler-list">
+			<ul class="table-like">
 				<li class="header">
+					<div class="cell">
+						Id
+					</div>
 					<div class="cell">
 						Label
 					</div>
@@ -130,6 +132,8 @@
 						Operation
 					</div>
 				</li>
+			</ul>
+			<ul class="table-like" id="crawler-list">
 
 				@foreach (var crawler in Model)
 				{
@@ -138,7 +142,11 @@
 					if (crawler.Hours > 0) period += $"{crawler.Hours}h ";
 					if (crawler.Minutes > 0) period += $"{crawler.Minutes}m";
 
-					<li class="crawler" id="@crawler.Id">
+					<li class="crawler" id="@crawler.Id" style="display: hidden;">
+
+						<div class="cell">
+							<span>@crawler.Id</span>
+						</div>
 
 						<div class="cell">
 							<span>@crawler.Label</span>
@@ -149,16 +157,15 @@
 						</div>
 
 						<div class="cell">
-							<span>@crawler.LastChange</span>
+							<span>@crawler.LastExecution</span>
 						</div>
 
 						<div class="cell">
-
 							<span>@period</span>
 						</div>
 
 						<div class="cell">
-							<span>@crawler.IsActive</span>
+							<span>@crawler.LastStatus</span>
 						</div>
 
 
@@ -169,7 +176,7 @@
 								var tags = tagsData.GetAllTags();
 								foreach (var tag in tags)
 								{
-									<span class="tag">@Html.Raw(tag.Key)</span>
+												<span class="tag">@Html.Raw(tag.Key)</span>
 								}
 							}
 						</div>
@@ -239,61 +246,81 @@
 			let pieces = input.split(' ');
 			pieces = pieces.map(piece => piece.trim());
 
-
-			let crawlers = document.querySelectorAll(".crawler");
+			const order = document.getElementById('sort-order').value;
+			const list = document.getElementById('crawler-list');
+			const crawlers = Array.from(list.getElementsByClassName('crawler'));
 			let numOfCrawlers = crawlers.length;
 			let filteredCrawlers = [];
 			let currentPage = Math.floor(start / (end - start + 1)) + 1;
 
+			if (order === "Url") {
+				crawlers.sort((a, b) => {
+					let urlA = a.getElementsByTagName("span")[2]?.textContent || "";
+					let urlB = b.getElementsByTagName("span")[2]?.textContent || "";
+					return urlA.localeCompare(urlB);
+				});
+			} else if (order === "LastExecutionTime") {
+				crawlers.sort((a, b) => {
+					
+					let timeA = a.getElementsByTagName("span")[3]?.textContent || "";
+					let timeB = b.getElementsByTagName("span")[3]?.textContent || "";
+
+					let dateA = new Date(timeA);
+					let dateB = new Date(timeB);
+
+					return dateA - dateB;
+				});
+			} else {
+				crawlers.sort((a, b) => {
+					let Id1 = parseInt(a.getElementsByTagName("span")[0]?.textContent) || 0;
+					let Id2 = parseInt(b.getElementsByTagName("span")[0]?.textContent) || 0;
+
+					return Id1 - Id2;
+				});
+			}
+
+			while (list.firstChild) {
+				list.removeChild(list.firstChild);
+			}
+
+			crawlers.forEach(crawler => {
+				list.appendChild(crawler);
+			});
+			
 
 			for (let i = 0; i < numOfCrawlers; i++) {
 				crawlers[i].style.display = "none";
 
 				let allPiecesMatch = true;
 
-				let crawlerLabel = crawlers[i].getElementsByTagName("span")[0]?.textContent || crawlers[i].getElementsByTagName("p")[0]?.innerText || "";
-				let crawlerUrl = crawlers[i].getElementsByTagName("span")[1]?.textContent || crawlers[i].getElementsByTagName("p")[1]?.innerText || "";
+				let crawlerLabel = crawlers[i].getElementsByTagName("span")[1]?.textContent || crawlers[i].getElementsByTagName("p")[0]?.innerText || "";
+				let crawlerUrl = crawlers[i].getElementsByTagName("span")[2]?.textContent || crawlers[i].getElementsByTagName("p")[1]?.innerText || "";
 				let tagElements = crawlers[i].querySelectorAll(".tag");
+				
+				if (input.length !== 0) {
+					pieces.forEach(piece => {
 
-				pieces.forEach(piece => {
-					let pieceInText = crawlerLabel.toUpperCase().indexOf(piece.toUpperCase()) > -1;
+						let pieceInText = crawlerLabel.toUpperCase().indexOf(piece.toUpperCase()) > -1;
 
-					let pieceInUrl = crawlerUrl.toUpperCase().indexOf(piece.toUpperCase()) > -1;
+						let pieceInUrl = crawlerUrl.toUpperCase().indexOf(piece.toUpperCase()) > -1;
 
 
-					let pieceInTags = Array.from(tagElements).some(tagElement => {
-						let tagText = tagElement.textContent || tagElement.innerText || "";
-						return tagText.toUpperCase().indexOf(piece.toUpperCase()) > -1;
+						let pieceInTags = Array.from(tagElements).some(tagElement => {
+							let tagText = tagElement.textContent || tagElement.innerText || "";
+							return tagText.toUpperCase().indexOf(piece.toUpperCase()) > -1;
+						});
+
+						if (!pieceInText && !pieceInUrl && !pieceInTags) {
+							allPiecesMatch = false;
+							return;
+						}
 					});
-
-					if (!pieceInText && !pieceInUrl && !pieceInTags) {
-						allPiecesMatch = false;
-						return;
-					}
-				});
-
+				}
+				
 				if (allPiecesMatch === true) {
 					filteredCrawlers.push(crawlers[i]);
 				}
 			}
-
-			const order = document.getElementById('sort-order').value;
-
-
-			if (order === "Url") {
-				filteredCrawlers.sort((a, b) => {
-					let urlA = a.getElementsByTagName("span")[1]?.textContent || "";
-					let urlB = b.getElementsByTagName("span")[1]?.textContent || "";
-					return urlA.localeCompare(urlB);
-				});
-			} else if (order === "LastExecutionTime") {
-				filteredCrawlers.sort((a, b) => {
-					let timeA = a.getElementsByTagName("span")[2]?.textContent || "";
-					let timeB = b.getElementsByTagName("span")[2]?.textContent || "";
-					return timeA - timeB;
-				});
-			}
-
 
 			let filteredNumOfCrawlers = filteredCrawlers.length;
 
