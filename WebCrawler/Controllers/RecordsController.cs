@@ -35,9 +35,9 @@ namespace WebCrawler.Controllers
         {
             string sql =
                 @"
-        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"",  ""LastChange""
-        FROM public.""WebsiteRecord"";
-    ";
+                SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange"", ""LastExecution"", ""LastStatus""
+                FROM public.""WebsiteRecord"";
+            ";
 
             var articles = DataAccess.LoadData<WebsiteRecordModel, dynamic>(
                 sql,
@@ -54,10 +54,10 @@ namespace WebCrawler.Controllers
         {
             string sql =
                 @"
-        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"",  ""LastChange""
-        FROM public.""WebsiteRecord""
-        WHERE ""Id"" = @Id;
-    ";
+                SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange"", ""LastExecution"", ""LastStatus""
+                FROM public.""WebsiteRecord""
+                WHERE ""Id"" = @Id;
+            ";
 
             var article = DataAccess
                 .LoadData<WebsiteRecordModel, dynamic>(sql, new { Id = id }, _connectionString)
@@ -81,18 +81,18 @@ namespace WebCrawler.Controllers
                 {
                     string insertSql =
                         @"
-        INSERT INTO public.""WebsiteRecord"" 
-        (""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange"")
-        VALUES (@Url, @BoundaryRegExp, @Days, @Hours, @Minutes, @Label, @IsActive, @Tags, @LastChange);
-    ";
+                        INSERT INTO public.""WebsiteRecord"" 
+                        (""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange"", ""LastExecution"", ""LastStatus"")
+                        VALUES (@Url, @BoundaryRegExp, @Days, @Hours, @Minutes, @Label, @IsActive, @Tags, @LastChange, @LastExecution, @LastStatus);
+                    ";
 
                     string selectSql =
                         @"
-        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange""
-        FROM public.""WebsiteRecord"" 
-        ORDER BY ""Id"" DESC
-        LIMIT 1;
-    ";
+                        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange"", ""LastExecution"", ""LastStatus""
+                        FROM public.""WebsiteRecord"" 
+                        ORDER BY ""Id"" DESC
+                        LIMIT 1;
+                    ";
                     try
                     {
                         DataAccess.SaveData(
@@ -108,6 +108,8 @@ namespace WebCrawler.Controllers
                                 model.IsActive,
                                 model.Tags,
                                 model.LastChange,
+                                model.LastExecution,
+                                model.LastStatus,
                             },
                             _connectionString
                         );
@@ -152,18 +154,20 @@ namespace WebCrawler.Controllers
                 {
                     string sql =
                         @"
-    UPDATE public.""WebsiteRecord"" 
-    SET ""Url"" = @Url, 
-        ""BoundaryRegExp"" = @BoundaryRegExp, 
-        ""Days"" = @Days, 
-        ""Hours"" = @Hours, 
-        ""Minutes"" = @Minutes, 
-        ""Label"" = @Label, 
-        ""IsActive"" = @IsActive, 
-        ""Tags"" = @Tags
-, ""LastChange"" =@LastChange
-    WHERE ""Id"" = @Id;
-";
+                        UPDATE public.""WebsiteRecord"" 
+                        SET ""Url"" = @Url, 
+                            ""BoundaryRegExp"" = @BoundaryRegExp, 
+                            ""Days"" = @Days, 
+                            ""Hours"" = @Hours, 
+                            ""Minutes"" = @Minutes, 
+                            ""Label"" = @Label, 
+                            ""IsActive"" = @IsActive, 
+                            ""Tags"" = @Tags,
+                            ""LastChange"" = @LastChange,
+                            ""LastExecution"" = @LastExecution,
+                            ""LastStatus"" = @LastStatus
+                        WHERE ""Id"" = @Id;
+                    ";
                     try
                     {
                         DataAccess.SaveData(
@@ -179,6 +183,9 @@ namespace WebCrawler.Controllers
                                 model.Label,
                                 model.IsActive,
                                 model.Tags,
+                                model.LastChange,
+                                model.LastExecution,
+                                model.LastStatus,
                             },
                             _connectionString
                         );
