@@ -8,7 +8,9 @@ CREATE TABLE "WebsiteRecord" (
     "Minutes" INT NOT NULL,
     "Label" VARCHAR(255) NOT NULL,
     "IsActive" BOOLEAN NOT NULL,
-    "Tags" VARCHAR(255)
+    "Tags" VARCHAR(255),
+    "LastExecution" TIMESTAMP,
+    "LastStatus" BOOLEAN       
 );
 
 CREATE TABLE "Node" (
