@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using DotNetEnv;
+using Microsoft.VisualBasic;
 using WebCrawler.Models;
 
 namespace WebCrawler.Controllers
@@ -77,6 +78,7 @@ namespace WebCrawler.Controllers
                         if (nextChangeTime <= DateTime.Now)
                         {
                             record.LastChange = null;
+                            record.LastStatus = null;
                             _DataQueue.Add(record);
                             Console.WriteLine($"Queued WebsiteRecord for action: {record.Url}");
                             updateRecord(record, _connectionString);
@@ -94,12 +96,20 @@ namespace WebCrawler.Controllers
         {
             string updateSql =
                 @"
-        UPDATE public.""WebsiteRecord""
-        SET ""LastChange"" = @LastChange
-        WHERE ""Id"" = @Id;
+    UPDATE public.""WebsiteRecord""
+    SET ""LastChange"" = @LastChange,
+        ""LastStatus"" = @LastStatus,
+        ""LastExecution"" = @LastExecution
+    WHERE ""Id"" = @Id;
     ";
 
-            var parameters = new { LastChange = record.LastChange, Id = record.Id };
+            var parameters = new
+            {
+                LastChange = record.LastChange,
+                LastStatus = record.LastStatus,
+                LastExecution = record.LastExecution,
+                Id = record.Id,
+            };
 
             try
             {
@@ -144,11 +154,13 @@ namespace WebCrawler.Controllers
                     {
                         NodeSniffer(node);
                     }
+                    record.LastExecution = DateTime.Now;
+                    record.LastStatus = true;
                     if (record.IsActive)
                     {
                         record.LastChange = DateTime.Now;
-                        updateRecord(record, _connectionString);
                     }
+                    updateRecord(record, _connectionString);
                 }
                 else
                 {
