@@ -147,9 +147,9 @@ namespace WebCrawler.Controllers
             ;
             string sql =
                 @"
-        SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags""
-        FROM public.""WebsiteRecord"";
-    ";
+    SELECT ""Id"", ""Url"", ""BoundaryRegExp"", ""Days"", ""Hours"", ""Minutes"", ""Label"", ""IsActive"", ""Tags"", ""LastChange"", ""LastExecution"", ""LastStatus""
+    FROM public.""WebsiteRecord"";
+";
 
             var articles = DataAccess.LoadData<WebsiteRecordModel, dynamic>(
                 sql,
