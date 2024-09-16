@@ -176,20 +176,40 @@
 
                         cy.nodes().lock();
 
+
                         const filteredElements = newElements.filter(element => {
+                            
+      
+
                             if (element.data.source && element.data.target) {
-                                const source = element.data.source;
-                                const target = element.data.target;
-                                return cy.edges(`[source = "${source}"][target = "${target}"]`).length === 0;
+                                
+                                const existingEdge = cy.edges().filter(edge => {
+                                    return edge.data('source') === element.data.source && edge.data('target') === element.data.target;
+                                });
+
+                                if (existingEdge.length > 0) {
+                                    return false;
+                                } 
+
+                                return true;
                             } else if (element.data.id) {
-                                const nodeExists = cy.getElementById(element.data.id).length > 0;
-                                return !nodeExists;
+
+                                const existingElement = cy.getElementById(element.data.id);
+                                const existingData = existingElement.data();
+                                const isSame = JSON.stringify(existingData) === JSON.stringify(element.data);
+
+                                if (!isSame) {
+                                    existingElement.data(element.data); 
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return true;
                             }
-                            return false;
-                        });
+                        }); 
 
                         cy.add(filteredElements);
-
 
                         cy.layout({
                             name: 'grid',
@@ -207,55 +227,41 @@
                             let innerHtmlDetail;
 
 
-                            if (viewModeSelect.value === "website") {
 
-                                if (node.data('crawled') === true) {
-                                    innerHtmlDetail = `
-                                                    URL: ${node.data('id')}<br>
-                                                    Crawl Time: ${node.data('crawlTime')}<br>
-                                                    ID Website Record: ${node.data('owner').identifier}<br>
-                                                    <button id="create-execution">Create new execution</button>
-                                                    `;
-                                } else {
-                                    innerHtmlDetail = `
-                                                    URL: ${node.data('id')}<br>
-                                                    <button id="create-execution">Create new Crawler and new execution</button>
-                                                    `;
-                                }
-
-                            } else if (viewModeSelect.value === "domain") {
-                                if (node.data('crawled') === true) {
-                                    innerHtmlDetail = `
-                                                    URL: ${node.data('id')}<br>
-                                                    Total Crawl Time: ${node.data('crawlTime')}<br>
-                                                    List of ID Website Records: [ ${node.data('websiteRecords')} ]<br>
-                                                    <input type="text" id="single-number" pattern="\d" title="Selected Website ID" required>
-                                                    <button id="create-execution">Create new execution</button>
-                                                    `;
-                                } else {
-                                    innerHtmlDetail = `
-                                                    URL: ${node.data('id')}<br>
-                                                    <button id="create-execution">Create new Crawler and new execution</button>
-                                                    `;
-                                }      
+                            if (node.data('crawled')) {
+                                innerHtmlDetail = `
+                                                                    URL: ${node.data('id')}<br>
+                                                                    Crawl Time: ${node.data('crawlTime')}<br>
+                                                                    List of ID Website Records: [ ${node.data('websiteRecords')} ]<br>
+                                                                    <input type="text" id="single-number" pattern="\d" title="Selected Website ID" required>
+                                                                    <button id="create-execution">Create new execution</button>
+                                                                    `;
+                            } else {
+                                innerHtmlDetail = `
+                                                                    URL: ${node.data('id')}<br>
+                                                                    <button id="create-execution">Create new Crawler and new execution</button>
+                                                                    `;
                             }
+
+           
 
                             nodeInfo.innerHTML = innerHtmlDetail;
 
-                            if (viewModeSelect.value === "website") {
+                            document.getElementById('create-execution').addEventListener('click', function () {
+                                const singleNumberElement = document.getElementById('single-number');
+                                let selectedID;
 
-                                document.getElementById('create-execution').addEventListener('click', function () {
-                                    createExecution(node.data('id'), node.data('owner').regexp, node.data('crawled'), node.data('owner').identifier);
-                                });
+                                if (!singleNumberElement) {
+ 
+                                    selectedID = null;
+                                } else {
+                                    selectedID = singleNumberElement.value;
+                                }
 
-                            } else if (viewModeSelect.value === "domain") {
+                                createExecution(node.data('id'), node.data('boundary'), node.data('crawled'), selectedID);
+                            });
 
-                                document.getElementById('create-execution').addEventListener('click', function () {
-
-                                    const selectedID = document.getElementById('single-number').value;
-                                    createExecution(node.data('id'), node.data('websiteRecords'), node.data('crawled'), selectedID);
-                                });
-                            }
+                           
 
                             nodeInfo.style.left = `${position.x + 10}px`;
                             nodeInfo.style.top = `${position.y + 10}px`;
@@ -282,7 +288,8 @@
 
                 const apiUrl = `${window.location.origin}/api/Records`;
 
-                if (isCrawled === false) {
+                if (!isCrawled) {
+
                     const data = {
                         Url: `${nodeUrl}`,
                         BoundaryRegExp: `${boundary}`,
@@ -329,90 +336,72 @@
                         });
                 } else {
 
-                    const apiUrl = `${window.location.origin}/api/RestartRecord/${websiteId}`;
-
-                    const requestBody = JSON.stringify({ id: websiteId });
-
-                    if (viewModeSelect.value === "website") {
-
-                        fetch(apiUrl, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: requestBody
+                    fetch(`${window.location.origin}/api/RestartRecord/${websiteId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ id: websiteId })
+                    })
+                        .then(result => {
+                            alert('New execution created successfully!');
                         })
-                            .then(result => {
-                                alert('Execution created successfully!');
+                        .catch(error => {
+                            console.error('Error creating new execution for existing record:', error);
+                            alert('Failed to create execution.');
+                        });
 
-                                const dataModeSelect = document.getElementById('data-mode');
-                                dataModeSelect.value = 'live';
-                                const selectedMode = dataModeSelect.value;
-                                isLive = selectedMode === 'live';
 
-                            })
-                            .catch(error => {
-                                console.error('Error creating new execution for existing record:', error);
-                                alert('Failed to create execution.');
-                            });
-
-                    } else if (viewModeSelect.value === "domain") {
-
-                        if (boundary.includes(websiteId)) {
-                            fetch(apiUrl, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: requestBody
-                            })
-                                .then(result => {
-                                    alert('Execution created successfully!');
-
-                                    isLive = true;
-                                    const dataModeSelect = document.getElementById('data-mode');
-                                    const selectedMode = dataModeSelect.value;
-                                    isLive = selectedMode === 'live';
-                                })
-                                .catch(error => {
-                                    console.error('Error creating new execution for existing record:', error);
-                                    alert('Failed to create execution.');
-                                });
-                        }
-                    }
                 }
             }
 
 
             function convertJsonToCytoscapeElements(data, viewMode) {
-                const nodes = [];
+                let nodes = [];
                 const nodeUrls = new Set();
 
                 if (viewMode === 'website') {
+
+                    const nodeMap = new Map();
+
                     data.data.nodes.forEach(node => {
                         const shape = determineNodeShape(node);
                         
-                        let isCrawled;
-
-                        if (node.crawlTime.length === 0) {
-                            isCrawled = false;
+                        if (!nodeMap.has(node.url)) {
+                            nodeMap.set(node.url, {
+                                data: {
+                                    id: node.url,
+                                    boundary: getDomainFromUrl(node.url),
+                                    title: node.title,
+                                    label: node.url,
+                                    shape: shape,
+                                    crawlTime: node.crawlTime,
+                                    websiteRecords: [node.owner.identifier],
+                                    crawled: node.crawlTime.length > 0
+                                }
+                            });
                         } else {
-                            isCrawled = true;
+                            const existingNode = nodeMap.get(node.url);
+
+                            if (shape === "diamond" && existingNode.data.shape === "rectangle" || shape === "diamond" && existingNode.data.shape === "ellipse") {
+                                existingNode.data.shape = "diamond";
+
+
+                            } else if (shape === "rectangle" && existingNode.data.shape === "ellipse") {
+                                existingNode.data.shape = "rectangle";
+                            }
+
+
+                            if (!existingNode.data.websiteRecords.includes(node.owner.identifier)) {
+                                existingNode.data.websiteRecords.push(node.owner.identifier);
+                            }
                         }
 
-                        nodes.push({
-                            data: {
-                                id: node.url,
-                                title: node.title,
-                                label: node.url,
-                                shape: shape,
-                                crawlTime: node.crawlTime,
-                                owner: node.owner,
-                                crawled: isCrawled
-                            }
-                        });
+
                         nodeUrls.add(node.url);
                     });
+
+                    nodes = Array.from(nodeMap.values());
                 } else if (viewMode === 'domain') {
                     const domainMap = new Map();
 
@@ -423,6 +412,7 @@
                         if (!domainMap.has(domain)) {
                             domainMap.set(domain, {
                                 id: domain,
+                                boundary: domain,
                                 label: domain,
                                 shape: 'ellipse',
                                 crawlTime: "",
@@ -436,10 +426,22 @@
 
                         if (node.crawlTime.length !== 0) {
                             domainMap.get(domain).crawled = true;
-                        } 
+                            domainMap.get(domain).shape = 'diamond';
+                        }
 
+                        const currentData = domainMap.get(domain);
+                        const newCrawlTime = node.crawlTime;
+                        const newCrawlDate = new Date(newCrawlTime);
 
-                        domainMap.get(domain).crawlTime = domainMap.get(domain).crawlTime + " " + node.crawlTime;
+                        if (newCrawlTime.length !== 0) {
+                            currentData.crawled = true;
+                            const existingCrawlDate = new Date(currentData.crawlTime);
+
+                            if (isNaN(existingCrawlDate.getTime()) || newCrawlDate < existingCrawlDate) {
+                                currentData.crawlTime = newCrawlTime; 
+                            }
+                        }
+
                         domainMap.get(domain).websiteRecords.add(node.owner.identifier);
                         nodeUrls.add(domain);
                     });
@@ -449,6 +451,7 @@
                         nodes.push({
                             data: {
                                 id: domainNode.id,
+                                boundary: domainNode.boundary,
                                 label: domainNode.label,
                                 shape: domainNode.shape,
                                 crawlTime: domainNode.crawlTime,
@@ -463,6 +466,7 @@
                 let edges = [];
 
                 if (viewMode === 'website') {
+                    const uniqueEdges = {};
 
                     edges = data.data.nodes.flatMap(node =>
                         node.links
@@ -473,11 +477,20 @@
                                     target: neighbour.url
                                 }
                             }))
-                    );
+                    ).filter(edge => {
+                        const key = `${edge.data.source}-${edge.data.target}`;
+
+                        if (uniqueEdges[key]) {
+                            return false;
+                        } else {
+                            uniqueEdges[key] = true;
+                            return true;
+                        }
+                    });
                 } else if (viewMode === 'domain') {
 
 
-                    // Tohle dela sjednoceni domen!!!! 
+                    // Tohle dela sjednoceni domen!!!! kvuli hranam
                     const unifiedNodes = data.data.nodes.reduce((acc, node) => {
                         const nodeUrl = getDomainFromUrl(node.url);
                         const links = node.links.map(link => getDomainFromUrl(link.url));
@@ -537,7 +550,7 @@
                     return;
                 } 
 
-                if (isChangedLabel === false) {
+                if (!isChangedLabel) {
                     return;
                 }
 
