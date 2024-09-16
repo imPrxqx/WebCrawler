@@ -14,11 +14,9 @@
 
 	<style>
 
-
 		#crawler-list {
 			height: 500px;
 		}
-
 
 		.table-like {
 			list-style: none;
@@ -34,13 +32,25 @@
 		}
 
 		.cell {
-			height: 40px;
+			height: 50px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.cell-left-align {
+			align-items: center; 
+			text-align: left; 
+			justify-content: flex-start; 
+		}
+
+
+		.cell-center-align {
+			justify-content: center;
+			align-items: center;
 		}
 
 		.cell, .operation {
 			display: flex;
-			justify-content: center;
-			align-items: center;
 		}
 
 		.operation a {
@@ -54,8 +64,6 @@
 
 		.table-like .cell {
 			flex: 1;
-			justify-content: center;
-			align-items: center;
 		}
 
 		#pagination {
@@ -63,7 +71,6 @@
 			justify-content: center;
 			align-items: center;
 		}
-
 
 		button {
 			width: 100px;
@@ -107,28 +114,29 @@
 		<div>
 			<ul class="table-like">
 				<li class="header">
-					<div class="cell">
+					<div class="cell cell-center-align">
 						Id
 					</div>
-					<div class="cell">
+					<div class="cell cell-center-align">
 						Label
 					</div>
-					<div class="cell">
+					<div class="cell cell-center-align">
 						Url
 					</div>
-					<div class="cell">
-						Last Change
-					</div>
-					<div class="cell">
+
+					<div class="cell cell-center-align">
 						Periodicity
 					</div>
-					<div class="cell">
-						Status
-					</div>
-					<div class="cell">
+					<div class="cell cell-center-align">
 						Tags
 					</div>
-					<div class="cell">
+					<div class="cell cell-center-align">
+						Last Execution
+					</div>
+					<div class="cell cell-center-align">
+						Last Execution Status
+					</div>
+					<div class="cell cell-center-align">
 						Operation
 					</div>
 				</li>
@@ -137,51 +145,53 @@
 
 				@foreach (var crawler in Model)
 				{
-					var period = "";
-					if (crawler.Days > 0) period += $"{crawler.Days}d ";
-					if (crawler.Hours > 0) period += $"{crawler.Hours}h ";
-					if (crawler.Minutes > 0) period += $"{crawler.Minutes}m";
+					string period = "";
+
+					period += $"{crawler.Days}d ";
+					period += $"{crawler.Hours}h ";
+					period += $"{crawler.Minutes}m";
 
 					<li class="crawler" id="@crawler.Id" style="display: hidden;">
 
-						<div class="cell">
+						<div class="cell cell-center-align">
 							<span>@crawler.Id</span>
 						</div>
 
-						<div class="cell">
+						<div class="cell cell-center-align">
 							<span>@crawler.Label</span>
 						</div>
 
-						<div class="cell">
+						<div class="cell cell-left-align">
 							<span>@crawler.Url</span>
 						</div>
 
-						<div class="cell">
-							<span>@crawler.LastExecution</span>
-						</div>
-
-						<div class="cell">
+						<div class="cell cell-center-align">
 							<span>@period</span>
 						</div>
 
-						<div class="cell">
-							<span>@crawler.LastStatus</span>
-						</div>
-
-
-						<div class="cell">
+						<div class="cell cell-center-align">
 							@{
 								TagsData tagsData = new TagsData();
 								tagsData.AddTags(crawler.Tags);
 								var tags = tagsData.GetAllTags();
 								foreach (var tag in tags)
 								{
-												<span class="tag">@Html.Raw(tag.Key)</span>
+										<span class="tag">@Html.Raw(tag.Key)</span>
 								}
 							}
 						</div>
 
-						<div class="cell operation">
+						<div class="cell cell-center-align">
+							<span>@(crawler.LastExecution.HasValue ? crawler.LastExecution.Value.ToString("yyyy-MM-dd HH:mm:ss") : "Running")</span>
+						</div>
+
+						<div class="cell cell-center-align">
+							<span>
+								@(crawler.LastStatus.HasValue ? (crawler.LastStatus.Value ? "Success" : "Failed") : "Running")
+							</span>
+						</div>
+
+						<div class="cell operation cell-center-align">
 							<a href="@Url.Action("ShowCrawler", "WebsitesCrawler", new { id = crawler.Id })">Show</a>
 
 							<a href="@Url.Action("CreateEditCrawler", "WebsitesCrawler", new { id = crawler.Id })">Edit</a>
@@ -241,6 +251,19 @@
 			getPageNum();
 		}
 
+		function parseDate(dateString) {
+			
+			if (dateString === "Running" || dateString === "") {
+				return new Date(0, 0, 0, 0, 0, 0);
+			}
+
+			let [datePart, timePart] = dateString.split(' ');
+			let [year, month, day] = datePart.split('-').map(num => parseInt(num, 10));
+			let [hour, minute, second] = timePart.split(':').map(num => parseInt(num, 10));
+
+			return new Date(year, month - 1, day, hour, minute, second);
+		}
+
 		function filterAndShow() {
 			let input = document.getElementById('search-bar-input').value.toUpperCase();
 			let pieces = input.split(' ');
@@ -262,11 +285,11 @@
 			} else if (order === "LastExecutionTime") {
 				crawlers.sort((a, b) => {
 					
-					let timeA = a.getElementsByTagName("span")[3]?.textContent || "";
-					let timeB = b.getElementsByTagName("span")[3]?.textContent || "";
+					let timeA = a.getElementsByTagName("span")[4]?.textContent || "";
+					let timeB = b.getElementsByTagName("span")[4]?.textContent || "";
 
-					let dateA = new Date(timeA);
-					let dateB = new Date(timeB);
+					let dateA = parseDate(timeA);
+					let dateB = parseDate(timeB);
 
 					return dateA - dateB;
 				});
