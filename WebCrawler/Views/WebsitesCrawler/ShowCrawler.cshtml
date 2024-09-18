@@ -130,9 +130,6 @@
                 }
 
                 fetchData();
-
-
-
             }
 
             function checkWebPageIdsChange() {
@@ -176,11 +173,8 @@
 
                         cy.nodes().lock();
 
-
                         const filteredElements = newElements.filter(element => {
                             
-      
-
                             if (element.data.source && element.data.target) {
                                 
                                 const existingEdge = cy.edges().filter(edge => {
@@ -207,15 +201,32 @@
                             } else {
                                 return true;
                             }
-                        }); 
+                        });
 
-                        cy.add(filteredElements);
 
-                        cy.layout({
-                            name: 'grid',
-                            fit: false,
-                            avoidOverlapPadding: 500
-                        }).run();
+                        const originalStyles = cy.style().json();
+
+                        const spiralSpacing = 300; 
+                        const initialAngle = 0;  
+                        const angleIncrement = Math.PI / 16; 
+                        const existingNodes = cy.nodes();
+                        const numExistingNodes = existingNodes.length;                    
+                        const addedElements = cy.add(filteredElements);
+
+                        addedElements.nodes().forEach((node, index) => {
+                            const globalIndex = numExistingNodes + index;
+                            const angle = initialAngle + angleIncrement * globalIndex;
+                            const radius = spiralSpacing * Math.sqrt(globalIndex + 1);
+                            const x = radius * Math.cos(angle);
+                            const y = radius * Math.sin(angle);
+
+                            node.position({
+                                x: x,
+                                y: y
+                            });
+                        });
+
+                        cy.style().json(originalStyles);
 
                         cy.nodes().unlock();
 
@@ -223,10 +234,7 @@
                             const node = event.target;
                             const nodeInfo = document.getElementById('node-info');
                             const position = node.renderedPosition();
-
                             let innerHtmlDetail;
-
-
 
                             if (node.data('crawled')) {
                                 innerHtmlDetail = `
@@ -563,8 +571,6 @@
 
                     if (selectedLabel === 'title') {
                         cy.style().selector('node').style('label', 'data(title)').update();
-
-
                     } else if (selectedLabel === 'url') {
                         cy.style().selector('node').style('label', 'data(label)').update();
                     }
