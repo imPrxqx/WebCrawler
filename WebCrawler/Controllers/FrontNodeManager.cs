@@ -11,12 +11,13 @@ namespace WebCrawler.Controllers
         {
             GetNodesDataFunction nodeDataFunction = new GetNodesDataFunction();
             Queue<Uri> urlQueue = new Queue<Uri>();
-            HashSet<Uri> seenUrls = new HashSet<Uri>();
+            HashSet<string> seenUrls = new HashSet<string>();
 
             if (ValidUrl(rootUrl, boundary))
             {
                 urlQueue.Enqueue(rootUrl);
-                seenUrls.Add(rootUrl);
+                seenUrls.Add(rootUrl.AbsoluteUri);
+                //seenUrls.Add(RemoveFragment(rootUrl));
             }
 
             while (urlQueue.Count > 0)
@@ -30,15 +31,30 @@ namespace WebCrawler.Controllers
 
                     foreach (Uri nextUrl in currentNode?.nextUrls)
                     {
-                        if (!seenUrls.Contains(nextUrl) && ValidUrl(nextUrl, boundary))
+                        //string baseNextUrl = RemoveFragment(nextUrl);
+                        string fullNextUrl = nextUrl.AbsoluteUri;
+
+                        /*
+                        if (!seenUrls.Contains(baseNextUrl) && ValidUrl(nextUrl, boundary))
                         {
                             urlQueue.Enqueue(nextUrl);
-                            seenUrls.Add(nextUrl);
+                            seenUrls.Add(baseNextUrl);
+                        }*/
+
+                        if (!seenUrls.Contains(fullNextUrl) && ValidUrl(nextUrl, boundary))
+                        {
+                            urlQueue.Enqueue(nextUrl);
+                            seenUrls.Add(fullNextUrl);
                         }
                     }
                 }
             }
         }
+        /*
+        private string RemoveFragment(Uri url)
+        {
+            return url.GetLeftPart(UriPartial.Path);
+        }*/
 
         private bool ValidUrl(Uri url, string boundary)
         {
