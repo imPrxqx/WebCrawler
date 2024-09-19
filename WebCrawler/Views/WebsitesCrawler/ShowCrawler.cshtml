@@ -77,6 +77,7 @@
         let isLive = false;
         let intervalId = null;
         let originalWebPageIds = [];
+        let wasFirstAdded = false;
 
         const viewModeSelect = document.getElementById('view-mode');
         const dataModeSelect = document.getElementById('data-mode');
@@ -139,7 +140,7 @@
                 if (hasIdBeenRemoved || originalWebPageIds.length === 0) {
     
                     cy.elements().remove();
-
+                    wasFirstAdded = false;
                 } 
                 
                 originalWebPageIds = webPageIdsInput.value.split(',').map(id => id.trim()).filter(id => id.length > 0);
@@ -227,6 +228,12 @@
                         });
 
                         cy.style().json(originalStyles);
+
+
+                        if (wasFirstAdded === false) {
+                            wasFirstAdded = true;
+                            cy.fit();
+                        }
 
                         cy.nodes().unlock();
 
@@ -540,7 +547,7 @@
             function determineNodeShape(node) {
                 if (node.url === node.owner.url) {
                     return 'diamond';
-                } else if (node.owner.regexp === getDomainFromUrl(node.url)) {
+                } else if (new RegExp(node.owner.regexp).test(node.url.toString())) {
                     return 'rectangle';
                 } else {
                     return 'ellipse';
