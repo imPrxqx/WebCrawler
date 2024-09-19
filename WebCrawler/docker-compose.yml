@@ -11,12 +11,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
-      - DATABASE_NAME=postgres
-      - DATABASE_PASS=admin
-      - DATABASE_USER=postgres
-      - DATABASE_SERVER=db  
-      - DATABASE_PORT=5432
-      - NUMBER_THREADS=2
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_PASS=${DATABASE_PASS}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_SERVER=${DATABASE_SERVER}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - NUMBER_THREADS=${NUMBER_THREADS}
     networks:
       - webnet
     depends_on:
