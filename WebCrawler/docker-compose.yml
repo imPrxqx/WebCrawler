@@ -9,18 +9,25 @@ services:
     ports:
       - "5000:8080"
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: "http://+:8080"
-      ConnectionStrings__DefaultConnection: "Host=db;Database=postgres;Username=postgres;Password=admin"
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - DATABASE_NAME=postgres
+      - DATABASE_PASS=admin
+      - DATABASE_USER=postgres
+      - DATABASE_SERVER=db  
+      - DATABASE_PORT=5432
+      - NUMBER_THREADS=2
     networks:
       - webnet
+    depends_on:
+      - db
 
   db:
     image: postgres:13
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
     ports:
       - "5432:5432"
     volumes:
@@ -32,7 +39,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 10100:8080
+      - "10100:8080"
     networks:
       - webnet
 
