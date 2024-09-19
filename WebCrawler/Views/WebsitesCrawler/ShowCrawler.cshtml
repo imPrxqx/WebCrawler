@@ -230,7 +230,7 @@
                         cy.style().json(originalStyles);
 
 
-                        if (wasFirstAdded === false) {
+                        if (wasFirstAdded === false && addedElements.nodes().length >= 1) {
                             wasFirstAdded = true;
                             cy.fit();
                         }
